@@ -80,7 +80,7 @@
         <!-- Logo mobile -->
         <div class="logo-mobile">
             <a th:href="@{/}">
-                <img th:src="@{/images/icons/logo-01.png}" alt="IMG-LOGO">
+                <img th:src="@{'/images/icons/logo-01.png'}" alt="IMG-LOGO">
             </a>
         </div>
         <!-- Icon header -->
@@ -360,13 +360,13 @@
     <section class="section-slide">
         <div class="wrap-slick1 rs2-slick1">
             <div class="slick1">
-                <div class="item-slick1 bg-overlay1" style="background-image: url(images/slide-05.jpg);"
-                     data-thumb="images/thumb-01.jpg" data-caption="Quần áo nữ">
+                <div class="item-slick1 bg-overlay1" style="background-image: url(images/slide-05.png);"
+                     data-thumb="images/thumb-03.jpg" data-caption="Men's Fashion">
                     <div class="container h-full">
                         <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
                             <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
 								<span class="ltext-202 txt-center cl0 respon2">
-									Bộ sưu tập quần áo nữ
+									Bộ sưu tập áo nam
 								</span>
                             </div>
 
@@ -414,13 +414,13 @@
                 </div>
 
                 <div class="item-slick1 bg-overlay1" style="background-image: url(images/slide-07.jpg);"
-                     data-thumb="images/thumb-03.jpg" data-caption="Men’s Wear">
+                     data-thumb="images/thumb-03.jpg" data-caption="Men’s Style">
                     <div class="container h-full">
                         <div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
                             <div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft"
                                  data-delay="0">
 								<span class="ltext-202 txt-center cl0 respon2">
-									Bộ sưu tập quần áo Nam
+									Bộ sưu tập áo Nam
 								</span>
                             </div>
 
@@ -454,13 +454,13 @@
                 <div class="col-md-6 p-b-30 m-lr-auto">
                     <!-- Block1 -->
                     <div class="block1 wrap-pic-w">
-                        <img th:src="@{'/images/banner-04.jpg'}" alt="IMG-BANNER">
+                        <img th:src="@{'/images/banner2.png'}" alt="IMG-BANNER">
 
                         <a href="/getproduct?page=0&gender=2"
                            class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
                             <div class="block1-txt-child1 flex-col-l">
 								<span class="block1-name ltext-102 trans-04 p-b-8">
-									Nữ
+									Bán chạy
 								</span>
 
                                 <span class="block1-info stext-102 trans-04">
@@ -486,7 +486,7 @@
                            class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
                             <div class="block1-txt-child1 flex-col-l">
 								<span class="block1-name ltext-102 trans-04 p-b-8">
-									Nam
+									Hàng mới
 								</span>
 
                                 <span class="block1-info stext-102 trans-04">
@@ -506,7 +506,7 @@
                 <div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
                     <!-- Block1 -->
                     <div class="block1 wrap-pic-w">
-                        <img th:src="@{'/images/banner1.png'}" alt="IMG-BANNER">
+                        <img th:src="@{'/images/tretrung.png'}" alt="IMG-BANNER">
 
                         <a href="/getproduct"
                            class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
@@ -532,7 +532,7 @@
                 <div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
                     <!-- Block1 -->
                     <div class="block1 wrap-pic-w">
-                        <img th:src="@{'/images/banner2.png'}" alt="IMG-BANNER">
+                        <img th:src="@{'/images/phongcach.png'}" alt="IMG-BANNER">
 
                         <a href="/getproduct"
                            class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
@@ -542,7 +542,7 @@
 								</span>
 
                                 <span class="block1-info stext-102 trans-04">
-									Mùa xuân 2024
+									Mùa đông 2024
 								</span>
                             </div>
 
@@ -558,7 +558,7 @@
                 <div class="col-md-6 col-lg-4 p-b-30 m-lr-auto">
                     <!-- Block1 -->
                     <div class="block1 wrap-pic-w">
-                        <img th:src="@{/images/banner-xyz.png}" alt="IMG-BANNER">
+                        <img th:src="@{'/images/lichlam.png'}" alt="IMG-BANNER">
 
                         <a href="/getproduct"
                            class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
@@ -568,7 +568,7 @@
 								</span>
 
                                 <span class="block1-info stext-102 trans-04">
-									Mùa xuân 2024
+									Mùa đông 2024
 								</span>
                             </div>
 
@@ -601,14 +601,14 @@
                     </button>
 
                     <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" th:classappend="${dataFilter.gender == '1'} ? 'how-active1'" data-filter="1">
-                        Nam
+                        Hàng mới
                     </button>
 
                     <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" th:classappend="${dataFilter.gender == '2'} ? 'how-active1'" data-filter="2">
-                        Nữ
+                        Bán chạy
                     </button>
                     <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" th:classappend="${dataFilter.gender == '3'} ? 'how-active1'" data-filter="3">
-                        Unisex
+                        Sắp ra mắt
                     </button>
 
                 </div>

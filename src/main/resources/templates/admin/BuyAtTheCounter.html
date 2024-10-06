@@ -224,7 +224,7 @@
         <!-- Modal Xác Nhận -->
         <div id="confirmation-modal-1" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 hidden">
             <div class="bg-white p-4 rounded shadow-lg w-1/3">
-                <p id="modal-message-1" class="text-center mb-4 font-bold">Bạn có chắc chắn muốn đóng toàn bộ các tab này không?</p>
+                <p id="modal-message-1" class="text-center mb-4 font-bold">Bạn có chắc chắn muốn đóng tab này không?</p>
                 <div class="flex justify-center space-x-4">
                     <button id="confirm-close-1" class="bg-red-500 text-white px-4 py-2 rounded">Xác nhận</button>
                     <button id="cancel-close-1" class="bg-gray-300 text-black px-4 py-2 rounded">Hủy</button>
@@ -1613,7 +1613,7 @@
                     // Xử lý khi pt thanh toán là chuyển khoản
                     if (paymentMethodId == 3) {
                         $(".qr-payment-container").removeClass('hidden');
-                        $(".qr-payment-container").find('img').attr("src", `https://img.vietqr.io/image/VCB-1016515422-compact2.png?amount=${pay.requireMoney}&addInfo=Thanh%20%20toan%20don%20hang&accountName=HOANG%20XUAN%20HIEU`);
+                        $(".qr-payment-container").find('img').attr("src", `https://img.vietqr.io/image/MB-1561619102003-compact2.png?amount=${pay.requireMoney}&addInfo=Thanh%20%20toan%20don%20hang&accountName=DO%20HOANH%20SANG`);
                         dataSendIfChuyenKhoan = dataSend;
                     } else {
                         // Execute the AJAX request directly for other payment methods
