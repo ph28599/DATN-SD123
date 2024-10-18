@@ -531,6 +531,24 @@
             </button>
 
         </div>
+
+<!--        <script>-->
+<!--            document.addEventListener('keydown', function (event) {-->
+<!--                if (event.key === 'F3') {-->
+<!--                    event.preventDefault();-->
+<!--                    document.getElementById('search-product').focus();-->
+<!--                }-->
+<!--            });-->
+<!--        </script>-->
+<!--        <script>-->
+<!--            document.addEventListener('keydown', function (event) {-->
+<!--                if (event.key === 'F4') {-->
+<!--                    event.preventDefault();-->
+<!--                    document.getElementById('search-customer').focus();-->
+<!--                }-->
+<!--            });-->
+<!--        </script>-->
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
                 th:inline="javascript"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -1590,6 +1608,14 @@
                         Swal.fire({
                             title: "Lỗi",
                             text: "Vui lòng nhập số tiền khách đưa",
+                            icon: "error"
+                        });
+                        return;
+                    }
+                    if (pay.customerPay < pay.requireMoney) {
+                        Swal.fire({
+                            title: "Lỗi",
+                            text: "Số tiền khách đưa phải lớn hơn hoặc bằng số tiền phải trả.",
                             icon: "error"
                         });
                         return;
