@@ -18,13 +18,12 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(Account account) {
         this.account = account;
     }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Role role = account.getRole();
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
-        authorityList.add(new SimpleGrantedAuthority(role.getName().toString()));
+            authorityList.add(new SimpleGrantedAuthority(role.getName().toString()));
         return authorityList;
     }
 

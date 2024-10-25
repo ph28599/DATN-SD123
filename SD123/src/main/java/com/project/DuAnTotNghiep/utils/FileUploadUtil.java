@@ -16,7 +16,6 @@ import java.nio.file.StandardCopyOption;
 public class FileUploadUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadUtil.class);
-
     public static String saveFile(String uploadDir, String fileName, MultipartFile multipartFile) throws IOException {
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
