@@ -198,9 +198,9 @@
                     </svg>
                 </div>
                 <input
-                        class="pl-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm outline-none rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        type="search" placeholder="Thêm sản phẩm vào đơn" aria-label="Search" id="search-product"
-                        style="width: 500px">
+                        class="pl-10 bg-white border border-gray-300 text-black text-sm outline-none rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
+                        type="search" placeholder="Tìm sản phẩm (F3)" aria-label="Search" id="search-product"
+                        style="width: 450px;">
                 <div
                         class="list-search-product hidden bg-white mt-2 rounded-md absolute top-9 px-2 py-2 left-0 z-50 shadow-lg right-0 max-h-80 overflow-y-scroll">
 
@@ -241,9 +241,8 @@
         </div>
         <div class="tab-container" data-tab-number="1">
             <div class="tab-list">
-                <div data-tab-number="1" class="tab active font-bold relative cursor-pointer">
-
-                    Đơn <span>1</span>
+                <div data-tab-number="1" class="tab active font-bold relative cursor-pointer rounded-lg p-2">
+                    Hóa đơn <span>1</span>
                 </div>
             </div>
             <span class="add-tab-btn h-6 w-6 block hover:bg-gray-700 rounded-full flex justify-center items-center">
@@ -333,8 +332,8 @@
                         </svg>
                     </button>
                     <input
-                            class="pl-10 w-full bg-gray-100 border border-gray-300 text-gray-900 text-md outline-none rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-1.5 py-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            type="text" placeholder="Thêm khách hàng (tùy chọn)" aria-label="Search" id="search-customer">
+                            class="pl-10 w-full bg-white border border-gray-300 text-black text-md outline-none rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-1.5 py-2"
+                            type="text" placeholder="Tìm khách hàng (F4)" aria-label="Search" id="search-customer">
                     <div id="crypto-modal" tabindex="-1" aria-hidden="true"
                          class="fixed hidden top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                         <div class="relative w-full max-w-md max-h-full left-1/4 top-1/4">
@@ -411,20 +410,13 @@
                     <span class="font-bold italic text-gray-500">--Khách lẻ--</span>
                 </div>
             </div>
-            <div class=" mb-3">
-                <div class="col">
-                    <h5 class="">Tổng tiền: </h5>
-                </div>
-                <div class="col">
-                    <h5 class="all-price font-bold text-2xl">0</h5>
-                </div>
+            <div class="flex items-center justify-between mb-3">
+                <h5 class="mr-2">Tổng tiền hàng</h5>
+                <h6 class="all-price text-2xl">0</h6>
             </div>
-            <div class=" mb-3">
-                <div class="col">
-                    <h5>Voucher: </h5>
-                </div>
-                <div class="col">
-                    <h6 class="text-red-500 cursor-pointer voucher-choose-btn" >Click vào để chọn</h6>
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center">
+                    <h6 class="text-red-500 cursor-pointer voucher-choose-btn mr-2">Chọn mã giảm giá</h6>
                     <div class="selected-voucher active"></div>
                 </div>
             </div>
@@ -531,24 +523,22 @@
             </button>
 
         </div>
-
-<!--        <script>-->
-<!--            document.addEventListener('keydown', function (event) {-->
-<!--                if (event.key === 'F3') {-->
-<!--                    event.preventDefault();-->
-<!--                    document.getElementById('search-product').focus();-->
-<!--                }-->
-<!--            });-->
-<!--        </script>-->
-<!--        <script>-->
-<!--            document.addEventListener('keydown', function (event) {-->
-<!--                if (event.key === 'F4') {-->
-<!--                    event.preventDefault();-->
-<!--                    document.getElementById('search-customer').focus();-->
-<!--                }-->
-<!--            });-->
-<!--        </script>-->
-
+        <script>
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'F3') {
+                    event.preventDefault();
+                    document.getElementById('search-product').focus();
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'F4') {
+                    event.preventDefault();
+                    document.getElementById('search-customer').focus();
+                }
+            });
+        </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
                 th:inline="javascript"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -636,16 +626,16 @@
                     var lastTabNumber = parseInt($('.tab-container .tab:last-child').attr('data-tab-number'));
 
                     // Tạo một tab mới với số thứ tự tăng dần
-                    var newTab = $(`<div data-tab-number="${lastTabNumber + 1}" class="tab font-bold relative cursor-pointer">
-                            Đơn <span> ${lastTabNumber + 1}</span>
-                            <div class="remove-tab-btn absolute top-0.5 right-0 cursor-pointer">
-                            <svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                viewBox="0 0 32 32">
-                                <path fill="currentColor"
-                                    d="M16 2C8.2 2 2 8.2 2 16s6.2 14 14 14s14-6.2 14-14S23.8 2 16 2zm5.4 21L16 17.6L10.6 23L9 21.4l5.4-5.4L9 10.6L10.6 9l5.4 5.4L21.4 9l1.6 1.6l-5.4 5.4l5.4 5.4l-1.6 1.6z" />
-                            </svg>
-                        </div>
-                            </div>`);
+                    var newTab = $(`<div data-tab-number="${lastTabNumber + 1}" class="tab font-bold relative cursor-pointer rounded-lg p-2">
+                    Hóa đơn <span> ${lastTabNumber + 1}</span>
+                    <div class="remove-tab-btn absolute top-0.5 right-0 cursor-pointer">
+                        <svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                            viewBox="0 0 32 32">
+                            <path fill="currentColor"
+                                d="M16 2C8.2 2 2 8.2 2 16s6.2 14 14 14s14-6.2 14-14S23.8 2 16 2zm5.4 21L16 17.6L10.6 23L9 21.4l5.4-5.4L9 10.6L10.6 9l5.4 5.4L21.4 9l1.6 1.6l-5.4 5.4l5.4 5.4l-1.6 1.6z"/>
+                        </svg>
+                    </div>
+                </div>`);
 
                     // Thêm tab mới vào danh sách
                     $('.tab-list').append(newTab);
@@ -1405,23 +1395,6 @@
                     }
                 });
 
-                // // Event handler for save customer button
-                // $('#save-customer-btn').on('click', async function () {
-                //     const customerCode = $("#customerCode").val().trim()
-                //     const customerName = $("#fullName").val().trim()
-                //     const customerPhone = $("#phoneNumber").val().trim()
-                //     // if (customerName == "" || customerName == null) {
-                //     //     Swal.fire({
-                //     //         title: "Lỗi",
-                //     //         text: "Vui lòng nhập họ tên khách hàng",
-                //     //         icon: "error"
-                //     //     });
-                //     //     return
-                //     // }
-                //
-                //
-                // })
-
                 //========================== XỬ LÝ VOUCHER ======================
                 $(".voucher-choose-btn").on('click', async function () {
                     $('#loading-overlay').show();
@@ -1580,7 +1553,19 @@
                     $('#voucher-modal').addClass('hidden')
                 }
 
-                //===========================================ẤN NÚT THANH TOÁN=====================
+                $('input[name="paymentMethod"]').on('change', function () {
+                    if ($(this).val() == 3) {
+                        const requiredMoney = pay.requireMoney;
+                        const formattedMoney = formatNumber(requiredMoney);
+
+                        $('#customerPayInput').val(formattedMoney);
+                        $('#customerPayInput').prop('readonly', true);
+                    } else {
+                        $('#customerPayInput').val('');
+                        $('#customerPayInput').prop('readonly', false);
+                        $('#customerPayInput').css('background-color', '');
+                    }
+                });
                 $('#submitBtn').on('click', handleSubmit);
 
                 var dataSendIfChuyenKhoan
@@ -1604,7 +1589,10 @@
                         return;
                     }
 
-                    if(pay.customerPay == '') {
+                    // Lấy giá trị từ ô nhập tiền khách đưa và định dạng lại
+                    const customerPay = parseInt(removeAnyNonDigit($("#customerPayInput").val())) || 0; // Nếu không có giá trị, gán bằng 0
+
+                    if (customerPay === 0) {
                         Swal.fire({
                             title: "Lỗi",
                             text: "Vui lòng nhập số tiền khách đưa",
@@ -1612,7 +1600,10 @@
                         });
                         return;
                     }
-                    if (pay.customerPay < pay.requireMoney) {
+
+                    const requireMoney = parseInt(pay.requireMoney) || 0;
+
+                    if (customerPay < requireMoney) {
                         Swal.fire({
                             title: "Lỗi",
                             text: "Số tiền khách đưa phải lớn hơn hoặc bằng số tiền phải trả.",
@@ -1636,18 +1627,19 @@
                         orderDetailDtos: orderDetails
                     };
 
-                    // Xử lý khi pt thanh toán là chuyển khoản
                     if (paymentMethodId == 3) {
                         $(".qr-payment-container").removeClass('hidden');
-                        $(".qr-payment-container").find('img').attr("src", `https://img.vietqr.io/image/MB-1561619102003-compact2.png?amount=${pay.requireMoney}&addInfo=Thanh%20%20toan%20don%20hang&accountName=DO%20HOANH%20SANG`);
-                        dataSendIfChuyenKhoan = dataSend;
+                        $(".qr-payment-container").find('img').attr("src", `https://img.vietqr.io/image/MB-1561619102003-compact2.png?amount=${requireMoney}&addInfo=Thanh%20toan%20don%20hang&accountName=DO%20HOANH%20SANG`);
+                        dataSendIfChuyenKhoan = {
+                            ...dataSend,
+                            requireMoney: requireMoney // Cập nhật giá trị requireMoney vào dataSendIfChuyenKhoan
+                        };
                     } else {
                         // Execute the AJAX request directly for other payment methods
                         await handleAjaxRequest(dataSend);
                     }
                 }
 
-                // Gọi thanh toán
                 async function handleAjaxRequest(dataSend) {
                     //============================================== XỬ LÝ THANH TOÁN =============================================
                     $('#loading-overlay').show();
