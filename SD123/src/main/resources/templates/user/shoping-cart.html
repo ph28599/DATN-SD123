@@ -234,7 +234,7 @@
                             <span class="stext-110 cl2">Phí ship:</span>
                         </div>
                         <div class="size-209">
-                            <span id="fee" class="mtext-110 cl2">0</span> <!-- Phí sẽ được cập nhật ở đây -->
+                            <span id="fee" class="mtext-110 cl2"> 0 </span>
                         </div>
                     </div>
                     <div class="flex-w flex-t bor12 p-t-15 p-b-30">
@@ -324,13 +324,10 @@
 			<i class="zmdi zmdi-chevron-up"></i>
 		</span>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" th:inline="javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script th:inline="javascript">
-        var addressShippings = /*[[${addressShippings}]]*/ [];
-        console.log(addressShippings); // In ra console
         $(document).ready(function () {
             var voucherList = /*[[${discountCodes}]]*/ '';
             var voucherChoosed;
@@ -342,7 +339,7 @@
             var tinhThanhPhoSelected = '';
             var quanHuyenSelected = '';
             var phuongXaSelected = '';
-            var phuongThucVanChuyen = 53320;
+            var phuongThucVanChuyen = 53321;
             var shippingFee = 0;
             var addressSelected = {};
 
@@ -387,32 +384,20 @@
             $(".shipping-choose").on('click', function () {
                 $(".shipping-choose").removeClass('active');
                 $(this).addClass('active');
-
-                // Lấy thông tin địa chỉ
                 const selectedAddress = $(this).find('p').text().trim();
                 const addressParts = selectedAddress.split(', ');
-
-                // Cập nhật thông tin địa chỉ
                 addressSelected = {
                     houseDeliveryAddress: addressParts[0],
                     phuongXa: addressParts[1],
                     quanHuyen: addressParts[2],
-                    tinhThanhPho: addressParts[3],
-                    districtId: $(this).data('district-id') // Lấy district ID từ data attribute
+                    tinhThanhPho: addressParts[3]
                 };
 
-                // Hiển thị phí ship
+                // Fetch the saved shipping fee for the selected address and update the UI
                 const shippingFee = $(this).data('shipping-fee');
-                $('#fee').text(formatNumber(shippingFee));  // Cập nhật hiển thị phí
-
-                // Gọi hàm tính phí ship
-                updateShippingFee();
+                $('#fee').text(formatNumber(shippingFee));  // Update the fee display
+                calculateTotal();
             });
-
-
-
-
-
 
             $("#add-address").on('click', function () {
                 $("#address-select-group").show();
@@ -504,10 +489,10 @@
 
             $.ajax({
                 type: "GET",
-                url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
                 contentType: "application/json",
                 headers: {
-                    "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
+                    "Token": "6650737f-9828-11ef-a905-420459bb4727"
                 },
                 success: function (response) {
                     $.each(response.data, function (index, item) {
@@ -522,10 +507,10 @@
 
             $.ajax({
                 type: "GET",
-                url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
                 contentType: "application/json",
                 headers: {
-                    "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
+                    "Token": "6650737f-9828-11ef-a905-420459bb4727"
                 },
                 success: function (response) {
                     quanHuyenData = response.data;
@@ -552,10 +537,10 @@
                 quanHuyenSelected = quanHuyen.find('option:selected').text();
                 $.ajax({
                     type: "GET",
-                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + quanHuyen.val(),
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + quanHuyen.val(),
                     contentType: "application/json",
                     headers: {
-                        "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
+                        "Token": "6650737f-9828-11ef-a905-420459bb4727"
                     },
                     success: function (response) {
                         phuongXa.html('<option value="">Phường/Xã</option>');
@@ -587,36 +572,33 @@
             }
 
             function updateShippingFee(callback) {
-                const districtId = addressSelected.districtId; // Lấy district ID từ addressSelected
-                const toWardId = phuongXa.val(); // Lấy ID phường xã
-
+                phuongXaSelected = phuongXa.val();
                 $.ajax({
                     type: "GET",
-                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
                     contentType: "application/json",
                     headers: {
-                        "Token": "68b8b44f-a88d-11ef-a905-420459bb4727",
+                        "Token": "6650737f-9828-11ef-a905-420459bb4727",
                         "shop_id": "5428050"
                     },
                     data: {
-                        service_type_id: 2,
-                        from_district_id: 1492, // ID quận huyện gốc
-                    
+                        weight: 100,
+                        service_id: 53321,
+                        to_ward_code: 120416,
+                        to_district_id: 1444
                     },
                     success: function (response) {
-                        const shippingFee = response.data.total;
-                        const formattedMoney = parseFloat(shippingFee).toLocaleString('en-US');
+                        shippingFee = response.data.total;
+                        var formattedMoney = parseFloat(shippingFee).toLocaleString('en-US');
                         $('#fee').text(formattedMoney);
                         if (callback) callback(shippingFee);  // Pass the fee to the callback function
-                        calculateTotal(); // Đảm bảo cập nhật tổng tiền khi phí ship thay đổi
+                        calculateTotal(); // Ensure the total is updated whenever the shipping fee changes
                     },
                     error: function (error) {
                         console.error('Xảy ra lỗi: ', error);
                     }
                 });
             }
-
-
 
             // Helper function to update subtotal based on quantity
             function updateSubtotal(row) {
@@ -738,8 +720,8 @@
                 }
 
                 var row = $(this).closest('.table-row');
-                updateSubtotal(row);   // Update the subtotal for the row
-                calculateTotal();      // Recalculate the total and check voucher validity
+                updateSubtotal(row);
+                calculateTotal();
                 updateToServer(row, $(this).val());
             });
 
