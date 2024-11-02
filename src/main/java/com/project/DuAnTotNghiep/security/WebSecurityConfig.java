@@ -34,12 +34,12 @@ public class WebSecurityConfig {
                 .loginPage("/user-login")
                 .loginProcessingUrl("/user_login")
                 .usernameParameter("email")
-                .successHandler(customAuthenticationSuccessHandler()) // Sử dụng Custom Authentication Success Handler
+                .successHandler(customAuthenticationSuccessHandler()) // Custom Success Handler
                 .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/user_logout")
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/user-login") // Redirect to user-login after logout
                 .permitAll()
                 .and()
                 .rememberMe()
@@ -53,7 +53,7 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler();
+        return new CustomAuthenticationSuccessHandler(); // Custom Success Handler
     }
 
     @Bean
