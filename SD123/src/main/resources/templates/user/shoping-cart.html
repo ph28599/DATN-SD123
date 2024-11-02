@@ -379,8 +379,6 @@
                     }
                 });
             });
-
-            // When an address is selected, update the shipping fee
             $(".shipping-choose").on('click', function () {
                 $(".shipping-choose").removeClass('active');
                 $(this).addClass('active');
@@ -392,25 +390,22 @@
                     quanHuyen: addressParts[2],
                     tinhThanhPho: addressParts[3]
                 };
-
-                // Fetch the saved shipping fee for the selected address and update the UI
                 const shippingFee = $(this).data('shipping-fee');
-                $('#fee').text(formatNumber(shippingFee));  // Update the fee display
+                $('#fee').text(formatNumber(shippingFee));
                 calculateTotal();
             });
+
 
             $("#add-address").on('click', function () {
                 $("#address-select-group").show();
                 $("#add-address").hide();
             });
 
-            // Save the address and the associated shipping fee
             $("#save-address-btn").on('click', function () {
                 const tinhThanhPho = $("#tinhThanhPho").val();
                 const quanHuyen = $("#quanHuyen").val();
                 const phuongXa = $("#phuongXa").val();
                 const houseDeliveryAddress = $("#houseDeliveryAddressLabel").val().trim();
-
                 if (tinhThanhPho === "" || quanHuyen === "" || phuongXa === "" || houseDeliveryAddress === "") {
                     swal("Lỗi", "Vui lòng nhập đầy đủ địa chỉ", "error");
                 } else {
@@ -418,15 +413,10 @@
                     addressSelected.tinhThanhPho = $("#tinhThanhPho option:selected").text();
                     addressSelected.quanHuyen = $("#quanHuyen option:selected").text();
                     addressSelected.phuongXa = $("#phuongXa option:selected").text();
-
-                    // Calculate the shipping fee for the new address
                     updateShippingFee(function(fee) {
                         var dataSend = {
-                            address: Object.entries(addressSelected)
-                                .filter(([key, value]) => value !== null && value !== '')
-                                .map(([key, value]) => value)
-                                .join(', '),
-                            shippingFee: fee  // Add the shipping fee to the address data
+                            address: `${addressSelected.houseDeliveryAddress}, ${addressSelected.phuongXa}, ${addressSelected.quanHuyen}, ${addressSelected.tinhThanhPho}`,
+                            shippingFee: fee  // Phí ship
                         };
 
                         $.ajax({
@@ -435,19 +425,20 @@
                             url: 'api/public/addressShipping',
                             data: JSON.stringify(dataSend),
                             success: function (data) {
+                                const fullAddress = `${addressSelected.houseDeliveryAddress}, ${addressSelected.phuongXa}, ${addressSelected.quanHuyen}, ${addressSelected.tinhThanhPho}`;
                                 const content = `<div class="shipping-choose" data-shipping-fee="${fee}">
-                                                <div id="shipping${data.id}">
-                                                    <p>${data.address}</p>
-                                                </div>
-                                            </div>`;
-                                // Append the new address
+                                        <div id="shipping${data.id}">
+                                            <p>${fullAddress}</p>
+                                        </div>
+                                    </div>`;
+
+                                updateAddressDisplay();
                                 $('.address-list').append(content);
 
-                                // Automatically select the newly added address
-                                $(".shipping-choose").removeClass('active'); // Remove active class from others
-                                $(`#shipping${data.id}`).closest('.shipping-choose').addClass('active'); // Add active class to the new one
+                                $(".shipping-choose").removeClass('active');
+                                $(`#shipping${data.id}`).closest('.shipping-choose').addClass('active');
 
-                                // Bind the click event to the newly added address
+                                // Thiết lập sự kiện click cho địa chỉ vừa thêm
                                 $(".shipping-choose").on('click', function () {
                                     $(".shipping-choose").removeClass('active');
                                     $(this).addClass('active');
@@ -459,14 +450,12 @@
                                         quanHuyen: addressParts[2],
                                         tinhThanhPho: addressParts[3]
                                     };
-
-                                    // Update the fee display based on the selected address
                                     const shippingFee = $(this).data('shipping-fee');
                                     $('#fee').text(formatNumber(shippingFee));
                                     calculateTotal();
                                 });
 
-                                // Trigger the shipping fee update and total calculation
+                                // Cập nhật phí ship và tính tổng
                                 $('#fee').text(formatNumber(fee));
                                 calculateTotal();
                             },
@@ -476,11 +465,13 @@
                             }
                         });
 
+                        // Hiển thị lại các phần tử giao diện
                         $("#add-address").show();
                         $("#address-select-group").hide();
                     });
                 }
             });
+
 
             $("#cancel-add-address").on('click', function () {
                 $("#add-address").show();
@@ -571,6 +562,7 @@
                 $('#full-address').text(fullAddress);
             }
 
+
             function updateShippingFee(callback) {
                 phuongXaSelected = phuongXa.val();
                 $.ajax({
@@ -584,11 +576,11 @@
                     data: {
                         weight: 100,
                         service_id: 53321,
-                        to_ward_code: 120416,
-                        to_district_id: 1444
+                        to_ward_code: phuongXa.val(),
+                        to_district_id: quanHuyen.val()
                     },
                     success: function (response) {
-                        shippingFee = response.data.total;
+                        var shippingFee = response.data.total;
                         var formattedMoney = parseFloat(shippingFee).toLocaleString('en-US');
                         $('#fee').text(formattedMoney);
                         if (callback) callback(shippingFee);  // Pass the fee to the callback function
