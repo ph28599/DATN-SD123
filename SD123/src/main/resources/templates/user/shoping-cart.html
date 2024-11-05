@@ -850,7 +850,7 @@
             });
 
             $("#submitBtn").on('click', async function () {
-                if (!tinhThanhPhoSelected || !quanHuyenSelected || !phuongXaSelected || !houseDeliveryAddress.val()) {
+                if (shippingFee == 0) {
                     swal("Lỗi", "Vui lòng nhập đầy đủ thông tin địa chỉ giao hàng.", "error");
                     return;
                 }
