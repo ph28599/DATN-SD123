@@ -21,12 +21,14 @@ public class AddressShipping {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    private int provinceId;
-//    private int districtId;
-//    private int wardId;
-//
-//
-//    private String street;
+    @Column(name = "province_id", nullable = false)
+    private int provinceId;
+
+    @Column(name = "district_id", nullable = false)
+    private int districtId;
+
+    @Column(name = "ward_id", nullable = false)
+    private int wardId;
 
 
     @Nationalized

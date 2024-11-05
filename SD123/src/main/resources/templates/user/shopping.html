@@ -489,7 +489,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
                 contentType: "application/json",
                 headers: {
                     "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
@@ -507,7 +507,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
                 contentType: "application/json",
                 headers: {
                     "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
@@ -537,7 +537,7 @@
                 quanHuyenSelected = quanHuyen.find('option:selected').text();
                 $.ajax({
                     type: "GET",
-                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + quanHuyen.val(),
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + quanHuyen.val(),
                     contentType: "application/json",
                     headers: {
                         "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
@@ -575,7 +575,7 @@
                 phuongXaSelected = phuongXa.val();
                 $.ajax({
                     type: "GET",
-                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
                     contentType: "application/json",
                     headers: {
                         "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"

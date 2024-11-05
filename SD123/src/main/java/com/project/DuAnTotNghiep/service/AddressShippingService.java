@@ -10,6 +10,7 @@ import java.util.List;
 @Service
 public interface AddressShippingService {
     List<AddressShippingDto> getAddressShippingByAccountId();
+
     AddressShippingDto saveAddressShippingUser(AddressShippingDto addressShippingDto);
 
     AddressShippingDto saveAddressShippingAdmin(AddressShippingDtoAdmin addressShippingDto);
