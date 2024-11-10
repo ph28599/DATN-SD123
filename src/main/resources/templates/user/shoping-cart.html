@@ -11,7 +11,8 @@
         <div class="loading-spinner"></div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index: 3000">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index: 3000">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -22,24 +23,35 @@
                 </div>
                 <div class="modal-body" style="overflow-y:auto; max-height: 400px ">
                     <th:block th:each="voucher : ${discountCodes}">
-                        <div th:data-voucher-id="${voucher.id}"  class="d-flex border border-primary rounded align-items-center cursor-pointer voucher-item mb-2">
-                            <div class="col-sm-3 d-flex justify-content-center align-items-center " style="background-color: rgb(219 234 254); height: 80px">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12.79 21L3 11.21v2c0 .53.21 1.04.59 1.41l7.79 7.79c.78.78 2.05.78 2.83 0l6.21-6.21c.78-.78.78-2.05 0-2.83L12.79 21z"></path><path fill="currentColor" d="M11.38 17.41c.78.78 2.05.78 2.83 0l6.21-6.21c.78-.78.78-2.05 0-2.83L12.63.58A2.04 2.04 0 0 0 11.21 0H5C3.9 0 3 .9 3 2v6.21c0 .53.21 1.04.59 1.41l7.79 7.79zM7.25 3a1.25 1.25 0 1 1 0 2.5a1.25 1.25 0 0 1 0-2.5z"></path></svg>
+                        <div th:data-voucher-id="${voucher.id}"
+                             class="d-flex border border-primary rounded align-items-center cursor-pointer voucher-item mb-2">
+                            <div class="col-sm-3 d-flex justify-content-center align-items-center "
+                                 style="background-color: rgb(219 234 254); height: 80px">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                          d="M12.79 21L3 11.21v2c0 .53.21 1.04.59 1.41l7.79 7.79c.78.78 2.05.78 2.83 0l6.21-6.21c.78-.78.78-2.05 0-2.83L12.79 21z"></path>
+                                    <path fill="currentColor"
+                                          d="M11.38 17.41c.78.78 2.05.78 2.83 0l6.21-6.21c.78-.78.78-2.05 0-2.83L12.63.58A2.04 2.04 0 0 0 11.21 0H5C3.9 0 3 .9 3 2v6.21c0 .53.21 1.04.59 1.41l7.79 7.79zM7.25 3a1.25 1.25 0 1 1 0 2.5a1.25 1.25 0 0 1 0-2.5z"></path>
+                                </svg>
                             </div>
                             <div class="col-sm-9">
                                 <div class="w-full">
                                     <p class="font-weight-bold amount-dis">Giảm
-                                        <span th:if="${voucher.type == 2}" th:text="${#numbers.formatDecimal(voucher.discountAmount, 0, 'POINT', 0, 'COMMA') + ' VND'}"></span>
+                                        <span th:if="${voucher.type == 2}"
+                                              th:text="${#numbers.formatDecimal(voucher.discountAmount, 0, 'POINT', 0, 'COMMA') + ' VND'}"></span>
                                         <span th:if="${voucher.type == 1}" th:text="${voucher.percentage} + '%'"></span>
                                     </p>
                                     <div>
-                                     <span class="mr-4 amount-mini" th:text="${'Cho đơn từ ' + #numbers.formatDecimal(voucher.minimumAmountInCart, 0, 'POINT', 0, 'COMMA') + ' VND'}">
+                                     <span class="mr-4 amount-mini"
+                                           th:text="${'Cho đơn từ ' + #numbers.formatDecimal(voucher.minimumAmountInCart, 0, 'POINT', 0, 'COMMA') + ' VND'}">
                                      </span>
-                                        <span class="amount-max" th:if="${voucher.type == 1}" th:text="'Giảm tối đa ' + ${#numbers.formatDecimal(voucher.maximumAmount, 0, 'POINT', 0, 'COMMA') + ' VND'}"></span>
+                                        <span class="amount-max" th:if="${voucher.type == 1}"
+                                              th:text="'Giảm tối đa ' + ${#numbers.formatDecimal(voucher.maximumAmount, 0, 'POINT', 0, 'COMMA') + ' VND'}"></span>
                                     </div>
 
                                     <div class="d-flex align-items-center ">
-                                        <span class="mr-2 text-sm text-gray-600" th:text="${'HSD: ' + #dates.format(voucher.endDate, 'dd/MM/yyyy')}">: [[]</span>
+                                        <span class="mr-2 text-sm text-gray-600"
+                                              th:text="${'HSD: ' + #dates.format(voucher.endDate, 'dd/MM/yyyy')}">: [[]</span>
                                     </div>
                                 </div>
                             </div>
@@ -71,9 +83,11 @@
                 <div class=" m-b-50">
                     <div class="">
                         <div th:if="${carts.size() == 0}" class="d-flex flex-column align-items-center">
-                            <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                            <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130"
+                                 class="img-fluid mb-4 mr-3">
                             <h3><strong>Giỏ hàng hiện tại trống</strong></h3>
-                            <a th:href="@{/getproduct}" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Tiếp tục mua sắm</a>
+                            <a th:href="@{/getproduct}" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Tiếp
+                                tục mua sắm</a>
                         </div>
                         <div class="wrap-table-shopping-cart">
 
@@ -106,9 +120,13 @@
                                     </td>
                                     <td class="column-3" th:text="${cart.product.name}"></td>
                                     <td class="column-3">
-                                        <span class="product-old-price" th:if="${cart.detail.discountedPrice != null}" th:text="${#numbers.formatDecimal(cart.detail.price, 0, 'POINT', 0, 'COMMA')}" style="text-decoration: line-through; font-size: 12px"></span>
-                                        <span class="product-price" th:if="${cart.detail.discountedPrice != null}" th:text="${#numbers.formatDecimal(cart.detail.discountedPrice, 0, 'POINT', 0, 'COMMA')}"></span>
-                                        <span class="product-price" th:if="${cart.detail.discountedPrice == null}" th:text="${#numbers.formatDecimal(cart.detail.price, 0, 'POINT', 0, 'COMMA')}"></span>
+                                        <span class="product-old-price" th:if="${cart.detail.discountedPrice != null}"
+                                              th:text="${#numbers.formatDecimal(cart.detail.price, 0, 'POINT', 0, 'COMMA')}"
+                                              style="text-decoration: line-through; font-size: 12px"></span>
+                                        <span class="product-price" th:if="${cart.detail.discountedPrice != null}"
+                                              th:text="${#numbers.formatDecimal(cart.detail.discountedPrice, 0, 'POINT', 0, 'COMMA')}"></span>
+                                        <span class="product-price" th:if="${cart.detail.discountedPrice == null}"
+                                              th:text="${#numbers.formatDecimal(cart.detail.price, 0, 'POINT', 0, 'COMMA')}"></span>
                                     </td>
                                     <td class="column-1" th:text="${cart.detail.size.name}"></td>
                                     <td class="column-1" th:text="${cart.detail.color.name}"></td>
@@ -117,7 +135,8 @@
                                             <div class="btn-num-product-down js-update-cart-down cl8 hov-btn3 trans-04 flex-c-m">
                                                 <i class="fs-16 zmdi zmdi-minus"></i>
                                             </div>
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number" th:name="'num-product'+${cart.id}" th:value="${cart.quantity}">
+                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                                   th:name="'num-product'+${cart.id}" th:value="${cart.quantity}">
                                             <div class="btn-num-product-up js-update-cart-up cl8 hov-btn3 trans-04 flex-c-m">
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
                                             </div>
@@ -137,7 +156,8 @@
 
                         </div>
 
-                        <span class="d-inline-block p-t-18 p-b-15 p-l-2 btn-choose-voucher" data-toggle="modal" data-target="#exampleModalCenter">
+                        <span class="d-inline-block p-t-18 p-b-15 p-l-2 btn-choose-voucher" data-toggle="modal"
+                              data-target="#exampleModalCenter">
 
                                 <span class="font-weight-bold">
                                     <i class="fa fa-tags" aria-hidden="true"></i>
@@ -181,20 +201,24 @@
                         <div class="size-209 pr-18 pr-0-sm w-full-ssm">
                             <div class="pt-15 addressArea">
                                 <span class="stext-112 cl8">Chọn địa chỉ</span>
-                                <div class="address-list pt-15">
-                                    <div th:if="${addressShippings.size() > 0}" class="pt-15">
-                                        <div th:each="address : *{addressShippings}" class="shipping-choose">
-                                            <div th:id="'shipping' + ${address.id}">
-                                                <p th:text="${address.address}"></p>
-                                            </div>
+                                <div th:if="${addressShippings.size() > 0}" class="pt-15">
+                                    <div th:each="address : ${addressShippings}" class="shipping-choose"
+                                         th:data-id="${address.id}"
+                                         th:data-ward-id="${address.wardId}"
+                                         th:data-district-id="${address.districtId}"
+                                         th:data-province-id="${address.provinceId}">
+                                        <div th:id="'shipping' + ${address.id}">
+                                            <p th:text="${address.address}"></p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <button type="button" class="bg2 size-102" id="add-address">Thêm địa chỉ +</button>
                                 <div id="address-select-group" style="display: none">
                                     <div class="rs1-select2 rs2-select2 bor8 bg0 mb-12 mt-9">
                                         <label for="tinhThanhPho" class="input-label">Tỉnh/Thành phố</label>
-                                        <select class="js-select2-custom custom-select" name="tinhThanhPho" id="tinhThanhPho" size="1">
+                                        <select class="js-select2-custom custom-select" name="tinhThanhPho"
+                                                id="tinhThanhPho" size="1">
                                             <option value="" selected>Tỉnh/Thành phố</option>
                                             <!-- Add options here -->
                                         </select>
@@ -202,7 +226,8 @@
                                     </div>
                                     <div class="rs1-select2 rs2-select2 bor8 bg0 mb-12 mt-9">
                                         <label for="quanHuyen" class="input-label">Quận/Huyện</label>
-                                        <select class="js-select2-custom custom-select" name="quanHuyen" id="quanHuyen" size="1">
+                                        <select class="js-select2-custom custom-select" name="quanHuyen" id="quanHuyen"
+                                                size="1">
                                             <option value="" selected>Quận/Huyện</option>
                                             <!-- Add options here -->
                                         </select>
@@ -210,7 +235,8 @@
                                     </div>
                                     <div class="rs1-select2 rs2-select2 bor8 bg0 mb-12 mt-9">
                                         <label for="phuongXa" class="input-label">Phường/Xã</label>
-                                        <select class="js-select2-custom custom-select" name="phuongXa" id="phuongXa" size="1">
+                                        <select class="js-select2-custom custom-select" name="phuongXa" id="phuongXa"
+                                                size="1">
                                             <option value="" selected>Phường/Xã</option>
                                             <!-- Add options here -->
                                         </select>
@@ -218,12 +244,17 @@
                                     </div>
                                     <div class="bor8 bg0 mb-12">
                                         <label for="houseDeliveryAddressLabel" class="input-label">Số nhà</label>
-                                        <input type="text" class="form-control" name="emailDeliveryAddress" id="houseDeliveryAddressLabel" placeholder="44 hoặc tên địa điểm gần nhà bạn" aria-label="44 hoặc tên địa điểm gần nhà bạn">
+                                        <input type="text" class="form-control" name="emailDeliveryAddress"
+                                               id="houseDeliveryAddressLabel"
+                                               placeholder="44 hoặc tên địa điểm gần nhà bạn"
+                                               aria-label="44 hoặc tên địa điểm gần nhà bạn">
                                     </div>
                                     <span class="stext-111 errorStreet" style="color: red; display: none">Vui lòng nhập số nhà, đường, xóm</span>
                                     <div>
-                                        <button class="bg2 size-102 hov-btn3" type="button" id="save-address-btn">Lưu</button>
-                                        <button class="bor8 size-102" type="button" id="cancel-add-address">Bỏ qua</button>
+                                        <button class="bg2 size-102 hov-btn3" type="button" id="save-address-btn">Lưu
+                                        </button>
+                                        <button class="bor8 size-102" type="button" id="cancel-add-address">Bỏ qua
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -272,27 +303,33 @@
 
                         <div class="size-209 p-t-1">
                             <div class="form-group">
-                                <input type="radio" class="custom-radio" value="3" name="paymentMethod" id="payment-online" checked>
+                                <input type="radio" class="custom-radio" value="3" name="paymentMethod"
+                                       id="payment-online" checked>
                                 <label for="payment-online">Thanh toán VNPAY</label>
                             </div>
                             <div class="form-group">
-                                <input type="radio" class="custom-radio" value="1" name="paymentMethod" id="payment-offline">
+                                <input type="radio" class="custom-radio" value="1" name="paymentMethod"
+                                       id="payment-offline">
                                 <label for="payment-offline">Thanh toán khi nhận hàng</label>
                             </div>
                         </div>
                     </div>
                     <label class="checkbox d-flex">
                         <input type="checkbox" class="mr-2" id="term">
-                        Tôi đồng ý với <a style="color: blue" data-toggle="modal" data-target="#exampleModalCenter2">&nbsp; điều khoản &nbsp</a> của cửa hàng
+                        Tôi đồng ý với <a style="color: blue" data-toggle="modal" data-target="#exampleModalCenter2">&nbsp;
+                        điều khoản &nbsp</a> của cửa hàng
                     </label>
-                    <button type="button" id="submitBtn" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" disabled>
+                    <button type="button" id="submitBtn"
+                            class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+                            disabled>
                         Đặt hàng
                     </button>
                 </div>
             </div>
         </div>
     </form>
-    <div class="modal fade" style="z-index: 3000" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" style="z-index: 3000" id="exampleModalCenter2" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content" style="max-width24: 100%">
                 <div class="modal-header">
@@ -302,14 +339,19 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>1.	Người mua đã thanh toán bằng cách phương thức thanh toán hợp lệ nhưng không nhận được sản phẩm, sản phẩm bị lỗi hoặc bị hư hại, sai sản phẩm, không ưng ý.</p>
-                    <p>2.	Có thể gửi yêu cầu trả hàng/hoàn tiền trong vòng 7 ngày kể từ lúc đơn hàng được cập nhật giao hàng thành công.</p>
-                    <p>3.	Tất cả các yêu cầu trả hànghoàn tiền phải được thực hiện trên web hoặc liên hệ trực tiếp tới cửa hàng</p>
-                    <p>4.	Phí gửi hàng lại do người mua trả</p>
-                    <p>5.	Mỗi hóa đơn chỉ được đổi trả 1 lần</p>
-                    <p>6.	Chỉ hỗ trợ đổi size, đổi màu, đổi sản phẩm bằng hoặc hơn giá</p>
-                    <p>7.	Người mua đóng gói và gửi trả sản phẩm bao gồm toàn bộ phụ kiện đi kèm, hóa đơn, tem phiếu bảo hành (nếu có) và sản phẩm phải trong tình trạng nguyên vẹn như khi nhận hàng.</p>
-                    <p>8.	Người mua bắt buộc phải quay video hoặc chụp lại ảnh sản phẩm ngay khi nhận được và trong lúc đóng gói hàng trả về để làm bằng chứng đối chiếu/khiếu nại về sau.</p>
+                    <p>1. Người mua đã thanh toán bằng cách phương thức thanh toán hợp lệ nhưng không nhận được sản
+                        phẩm, sản phẩm bị lỗi hoặc bị hư hại, sai sản phẩm, không ưng ý.</p>
+                    <p>2. Có thể gửi yêu cầu trả hàng/hoàn tiền trong vòng 7 ngày kể từ lúc đơn hàng được cập nhật giao
+                        hàng thành công.</p>
+                    <p>3. Tất cả các yêu cầu trả hànghoàn tiền phải được thực hiện trên web hoặc liên hệ trực tiếp tới
+                        cửa hàng</p>
+                    <p>4. Phí gửi hàng lại do người mua trả</p>
+                    <p>5. Mỗi hóa đơn chỉ được đổi trả 1 lần</p>
+                    <p>6. Chỉ hỗ trợ đổi size, đổi màu, đổi sản phẩm bằng hoặc hơn giá</p>
+                    <p>7. Người mua đóng gói và gửi trả sản phẩm bao gồm toàn bộ phụ kiện đi kèm, hóa đơn, tem phiếu bảo
+                        hành (nếu có) và sản phẩm phải trong tình trạng nguyên vẹn như khi nhận hàng.</p>
+                    <p>8. Người mua bắt buộc phải quay video hoặc chụp lại ảnh sản phẩm ngay khi nhận được và trong lúc
+                        đóng gói hàng trả về để làm bằng chứng đối chiếu/khiếu nại về sau.</p>
 
                 </div>
                 <div class="modal-footer">
@@ -339,11 +381,11 @@
             var tinhThanhPhoSelected = '';
             var quanHuyenSelected = '';
             var phuongXaSelected = '';
-            var phuongThucVanChuyen = 53320;
-            var shippingFee = 0;
             var addressSelected = {};
+            let shippingFee = 0;
+            let addressShippings = /*[[${addressShippings}]]*/ [];
+            console.log("Dữ liệu địa chỉ từ cơ sở dữ liệu:", addressShippings);
 
-            // Event listener for deleting a product
             $('.delete-product').on('click', function () {
                 var row = $(this).closest('.table-row');
                 var cartId = row.find('.cartId').val();
@@ -380,23 +422,28 @@
                 });
             });
 
-            // When an address is selected, update the shipping fee
-            $(".shipping-choose").on('click', function () {
+            $('.addressArea').on('click', '.shipping-choose', function () {
                 $(".shipping-choose").removeClass('active');
                 $(this).addClass('active');
+
                 const selectedAddress = $(this).find('p').text().trim();
                 const addressParts = selectedAddress.split(', ');
+
                 addressSelected = {
                     houseDeliveryAddress: addressParts[0],
                     phuongXa: addressParts[1],
                     quanHuyen: addressParts[2],
-                    tinhThanhPho: addressParts[3]
+                    tinhThanhPho: addressParts[3],
+                    provinceId: $(this).data('province-id'),
+                    districtId: $(this).data('district-id'),
+                    wardId: $(this).data('ward-id')
                 };
-
-                // Fetch the saved shipping fee for the selected address and update the UI
-                const shippingFee = $(this).data('shipping-fee');
-                $('#fee').text(formatNumber(shippingFee));  // Update the fee display
-                calculateTotal();
+                // Cập nhật phí vận chuyển dựa trên địa chỉ đã chọn
+                updateShippingFee1(addressSelected.wardId, addressSelected.districtId, function (fee) {
+                    $('#fee').text(formatNumber(fee));
+                    shippingFee = fee;
+                    calculateTotal();
+                });
             });
 
             $("#add-address").on('click', function () {
@@ -404,29 +451,41 @@
                 $("#add-address").hide();
             });
 
-            // Save the address and the associated shipping fee
-            $("#save-address-btn").on('click', function () {
-                const tinhThanhPho = $("#tinhThanhPho").val();
-                const quanHuyen = $("#quanHuyen").val();
-                const phuongXa = $("#phuongXa").val();
-                const houseDeliveryAddress = $("#houseDeliveryAddressLabel").val().trim();
+            function resetAddressForm() {
+                $("#tinhThanhPho").val("");
+                $("#quanHuyen").html('<option value="">Quận/Huyện</option>');
+                $("#phuongXa").html('<option value="">Phường/Xã</option>');
+                $("#houseDeliveryAddressLabel").val("");
+            }
 
-                if (tinhThanhPho === "" || quanHuyen === "" || phuongXa === "" || houseDeliveryAddress === "") {
+            $("#save-address-btn").on('click', function () {
+                const addressCount = $('.addressArea .shipping-choose').length;
+                if (addressCount >= 5) {
+                    swal("Thông báo", "Bạn chỉ có thể thêm tối đa 5 địa chỉ", "warning");
+                    return;
+                }
+                const districtId = $("#quanHuyen").val();
+                const wardCode = $("#phuongXa").val();
+                const houseDeliveryAddress = $("#houseDeliveryAddressLabel").val().trim();
+                const provinceId = $("#tinhThanhPho").val();
+
+                if (provinceId === "" || districtId === "" || wardCode === "" || houseDeliveryAddress === "") {
                     swal("Lỗi", "Vui lòng nhập đầy đủ địa chỉ", "error");
                 } else {
-                    addressSelected.houseDeliveryAddress = houseDeliveryAddress;
-                    addressSelected.tinhThanhPho = $("#tinhThanhPho option:selected").text();
-                    addressSelected.quanHuyen = $("#quanHuyen option:selected").text();
-                    addressSelected.phuongXa = $("#phuongXa option:selected").text();
+                    const addressSelected = {
+                        houseDeliveryAddress: houseDeliveryAddress,
+                        tinhThanhPho: $("#tinhThanhPho option:selected").text(),
+                        quanHuyen: $("#quanHuyen option:selected").text(),
+                        phuongXa: $("#phuongXa option:selected").text()
+                    };
 
-                    // Calculate the shipping fee for the new address
-                    updateShippingFee(function(fee) {
-                        var dataSend = {
-                            address: Object.entries(addressSelected)
-                                .filter(([key, value]) => value !== null && value !== '')
-                                .map(([key, value]) => value)
-                                .join(', '),
-                            shippingFee: fee  // Add the shipping fee to the address data
+                    updateShippingFee(function (fee) {
+                        const dataSend = {
+                            address: `${addressSelected.houseDeliveryAddress}, ${addressSelected.phuongXa}, ${addressSelected.quanHuyen}, ${addressSelected.tinhThanhPho}`,
+                            shippingFee: fee,
+                            provinceId: provinceId,
+                            districtId: districtId,
+                            wardId: wardCode
                         };
 
                         $.ajax({
@@ -435,49 +494,38 @@
                             url: 'api/public/addressShipping',
                             data: JSON.stringify(dataSend),
                             success: function (data) {
-                                const content = `<div class="shipping-choose" data-shipping-fee="${fee}">
-                                                <div id="shipping${data.id}">
-                                                    <p>${data.address}</p>
-                                                </div>
-                                            </div>`;
-                                // Append the new address
-                                $('.address-list').append(content);
+                                if (data && data.id) {
+                                    const fullAddress = `${addressSelected.houseDeliveryAddress}, ${addressSelected.phuongXa}, ${addressSelected.quanHuyen}, ${addressSelected.tinhThanhPho}`;
+                                    const newAddressHTML = `
+                            <div class="shipping-choose" data-shipping-fee="${fee}" data-province-id="${provinceId}" data-district-id="${districtId}" data-ward-id="${wardCode}">
+                                <div id="shipping${data.id}">
+                                    <p>${fullAddress}</p>
+                                </div>
+                            </div>`;
 
-                                // Automatically select the newly added address
-                                $(".shipping-choose").removeClass('active'); // Remove active class from others
-                                $(`#shipping${data.id}`).closest('.shipping-choose').addClass('active'); // Add active class to the new one
+                                    $('.addressArea > .pt-15').append(newAddressHTML);
 
-                                // Bind the click event to the newly added address
-                                $(".shipping-choose").on('click', function () {
+                                    updateAddressDisplay();
+
                                     $(".shipping-choose").removeClass('active');
-                                    $(this).addClass('active');
-                                    const selectedAddress = $(this).find('p').text().trim();
-                                    const addressParts = selectedAddress.split(', ');
-                                    addressSelected = {
-                                        houseDeliveryAddress: addressParts[0],
-                                        phuongXa: addressParts[1],
-                                        quanHuyen: addressParts[2],
-                                        tinhThanhPho: addressParts[3]
-                                    };
+                                    $(`#shipping${data.id}`).closest('.shipping-choose').addClass('active');
 
-                                    // Update the fee display based on the selected address
-                                    const shippingFee = $(this).data('shipping-fee');
-                                    $('#fee').text(formatNumber(shippingFee));
+
+                                    $('#fee').text(formatNumber(fee));
                                     calculateTotal();
-                                });
 
-                                // Trigger the shipping fee update and total calculation
-                                $('#fee').text(formatNumber(fee));
-                                calculateTotal();
+                                    $("#add-address").show();
+                                    $("#address-select-group").hide();
+                                    resetAddressForm();
+                                } else {
+                                    swal("Lỗi", "Không thể lấy dữ liệu địa chỉ từ server.", "error");
+                                }
                             },
                             error: function (xhr, status, error) {
                                 $('#loading-overlay').hide();
                                 swal("Lỗi", xhr.responseJSON.message, "error");
                             }
                         });
-
-                        $("#add-address").show();
-                        $("#address-select-group").hide();
                     });
                 }
             });
@@ -489,10 +537,10 @@
 
             $.ajax({
                 type: "GET",
-                url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
                 contentType: "application/json",
                 headers: {
-                    "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
+                    "Token": "6650737f-9828-11ef-a905-420459bb4727"
                 },
                 success: function (response) {
                     $.each(response.data, function (index, item) {
@@ -507,10 +555,10 @@
 
             $.ajax({
                 type: "GET",
-                url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district",
                 contentType: "application/json",
                 headers: {
-                    "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
+                    "Token": "6650737f-9828-11ef-a905-420459bb4727"
                 },
                 success: function (response) {
                     quanHuyenData = response.data;
@@ -537,10 +585,10 @@
                 quanHuyenSelected = quanHuyen.find('option:selected').text();
                 $.ajax({
                     type: "GET",
-                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + quanHuyen.val(),
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + quanHuyen.val(),
                     contentType: "application/json",
                     headers: {
-                        "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
+                        "Token": "6650737f-9828-11ef-a905-420459bb4727"
                     },
                     success: function (response) {
                         phuongXa.html('<option value="">Phường/Xã</option>');
@@ -572,27 +620,36 @@
             }
 
             function updateShippingFee(callback) {
-                phuongXaSelected = phuongXa.val();
+                const wardCode = phuongXa.val();
+                const districtId = quanHuyen.val();
+                if (!wardCode || !districtId) {
+                    console.error('Ward code or district ID is missing.');
+                    return;
+                }
                 $.ajax({
                     type: "GET",
-                    url: "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
                     contentType: "application/json",
                     headers: {
-                        "Token": "68b8b44f-a88d-11ee-8bfa-8a2dda8ec551"
+                        "Token": "6650737f-9828-11ef-a905-420459bb4727",
+                        "shop_id": "5428050"
                     },
                     data: {
-                        shop_id: "190713",
                         weight: 100,
-                        service_id: phuongThucVanChuyen,
-                        to_ward_code: phuongXaSelected,
-                        to_district_id: quanHuyen.val()
+                        service_id: 53321,
+                        to_ward_code: wardCode,
+                        to_district_id: districtId
                     },
                     success: function (response) {
-                        shippingFee = response.data.total;
-                        var formattedMoney = parseFloat(shippingFee).toLocaleString('en-US');
-                        $('#fee').text(formattedMoney);
-                        if (callback) callback(shippingFee);  // Pass the fee to the callback function
-                        calculateTotal(); // Ensure the total is updated whenever the shipping fee changes
+                        if (response.data && response.data.total) {
+                            var shippingFee = response.data.total;
+                            var formattedMoney = parseFloat(shippingFee).toLocaleString('en-US');
+                            $('#fee').text(formattedMoney);
+                            if (callback) callback(shippingFee);
+                            calculateTotal();
+                        } else {
+                            console.error('Không có dữ liệu phí vận chuyển.');
+                        }
                     },
                     error: function (error) {
                         console.error('Xảy ra lỗi: ', error);
@@ -600,7 +657,44 @@
                 });
             }
 
-            // Helper function to update subtotal based on quantity
+            function updateShippingFee1(wardId, districtId, callback) {
+                if (!wardId || !districtId) {
+                    console.error('Ward ID hoặc District ID bị thiếu.');
+                    return;
+                }
+
+                // Gọi API tính phí vận chuyển
+                $.ajax({
+                    type: "GET",
+                    url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+                    contentType: "application/json",
+                    headers: {
+                        "Token": "6650737f-9828-11ef-a905-420459bb4727",
+                        "shop_id": "5428050"
+                    },
+                    data: {
+                        weight: 100, // Đảm bảo trọng lượng chính xác
+                        service_id: 53321, // Kiểm tra ID dịch vụ
+                        to_ward_code: wardId,
+                        to_district_id: districtId,
+                        from_district_id: 1441  // Thêm ID của quận/huyện gửi hàng nếu cần thiết
+                    },
+                    success: function (response) {
+                        if (response.data && response.data.total) {
+                            const shippingFee = response.data.total;
+                            if (callback) callback(shippingFee);
+                            calculateTotal();
+                        } else {
+                            console.error('Không có dữ liệu phí vận chuyển.');
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Lỗi xảy ra khi gọi API tính phí vận chuyển:', error);
+                    }
+                });
+            }
+
+
             function updateSubtotal(row) {
                 var quantity = parseInt(row.find(".num-product").val());
                 var price = parseFloat(removeAnyNonDigit(row.find('.product-price').text()));
@@ -608,7 +702,6 @@
                 row.find('.total-money').text(formatNumber(subtotal) + ' VND');
             }
 
-            // Function to recalculate voucher price based on the selected voucher
             function calculateVoucherPrice() {
                 if (voucherChoosed) {
                     var totalMoney = parseFloat(removeAnyNonDigit($('#sub-total').text()));
@@ -653,10 +746,6 @@
                 // Trigger recalculation to remove voucher discount
                 calculateTotal();
             }
-            $(document).on('click', '.shipping-choose', function() {
-                const addressId = $(this).attr('id').replace('shipping', '');
-                updateShippingFee(addressId);
-            });
 
             // Function to calculate total and check voucher validity
             function calculateTotal() {
@@ -720,8 +809,8 @@
                 }
 
                 var row = $(this).closest('.table-row');
-                updateSubtotal(row);   // Update the subtotal for the row
-                calculateTotal();      // Recalculate the total and check voucher validity
+                updateSubtotal(row);
+                calculateTotal();
                 updateToServer(row, $(this).val());
             });
 
@@ -819,7 +908,7 @@
             });
 
             $("#submitBtn").on('click', async function () {
-                if (!tinhThanhPhoSelected || !quanHuyenSelected || !phuongXaSelected || !houseDeliveryAddress.val()) {
+                if (shippingFee == 0) {
                     swal("Lỗi", "Vui lòng nhập đầy đủ thông tin địa chỉ giao hàng.", "error");
                     return;
                 }
@@ -848,7 +937,8 @@
                     billingAddress: $('.shipping-choose.active p').text().trim(),
                     promotionPrice: promotion,
                     voucherId: voucherId,
-                    orderDetailDtos: orderDetails
+                    orderDetailDtos: orderDetails,
+                    shippingFee: shippingFee
                 };
 
                 if (paymentMethodId == 3) {
@@ -886,7 +976,8 @@
                                     window.location.href = '/getproduct';
                                 } else {
                                     orderDetails.forEach(detail => {
-                                        $(`.cartId[value=${detail.productDetailId}]`).closest('.table-row').remove();
+                                        const row = $(`.cartId[value=${detail.productDetailId}]`).closest('.table-row');
+                                        row.remove();
                                     });
                                     calculateTotal();
                                 }
@@ -910,6 +1001,7 @@
             }
 
             var debounceTimer;
+
             function updateToServer(row, quantity) {
                 if (debounceTimer) {
                     clearTimeout(debounceTimer);

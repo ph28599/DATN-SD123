@@ -4,7 +4,10 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.project.DuAnTotNghiep.dto.Bill.*;
 import com.project.DuAnTotNghiep.dto.CustomerDto.CustomerDto;
-import com.project.DuAnTotNghiep.entity.*;
+import com.project.DuAnTotNghiep.entity.Account;
+import com.project.DuAnTotNghiep.entity.Bill;
+import com.project.DuAnTotNghiep.entity.BillDetail;
+import com.project.DuAnTotNghiep.entity.ProductDetail;
 import com.project.DuAnTotNghiep.entity.enumClass.BillStatus;
 import com.project.DuAnTotNghiep.entity.enumClass.InvoiceType;
 import com.project.DuAnTotNghiep.exception.NotFoundException;
@@ -303,8 +306,8 @@ public class BillServiceImpl implements BillService {
                 "<h5> Mã hóa đơn: " + billDetailDtoInterface.getMaDinhDanh() + "</h5>\n" +
                 "<h5> Họ và tên: " + customerName + "</h5>\n" +
                 "<h5> Số điện thoại :" + customerPhone + "</h5>\n" +
-                "<h5> Email: " + email + "</h5>\n" +
-                "<h5> Địa chỉ:" + address + "</h5>\n" +
+//                "<h5> Email: " + email + "</h5>\n" +
+//                "<h5> Địa chỉ:" + address + "</h5>\n" +
                 "<h5> Ngày thanh toán: " + billDetailDtoInterface.getCreatedDate().format(formatter) + "</h5>\n" +
                 "<h3>Danh sách sản phẩm:</h3>\n" +
                 "<table border=\"1\" style=\"border-collapse: collapse;\">\n" +
@@ -317,7 +320,7 @@ public class BillServiceImpl implements BillService {
                 "<th>Tổng tiền</th>\n" +
                 "</tr>\n";
         Double totalMoney = Double.valueOf(0);
-        for (BillDetailProduct item:
+        for (BillDetailProduct item :
                 billDetailProduct) {
             totalMoney += item.getGiaTien() * item.getSoLuong();
         }
@@ -342,6 +345,7 @@ public class BillServiceImpl implements BillService {
         }
         htmlContent += "</table>\n" +
                 "<h5>Tổng tiền: " + currencyFormatter.format(totalMoney) + "</h5>\n" +
+                "<h5>Tiền ship: " + currencyFormatter.format(billDetailDtoInterface.getPhiShip()) + "</h5>\n" +
                 "<h5>Tiền giảm giá: " + currencyFormatter.format(billDetailDtoInterface.getTienKhuyenMai()) + "</h5>\n" +
                 "<h4>Tổng tiền thanh toán: " + currencyFormatter.format(totalMoney - billDetailDtoInterface.getTienKhuyenMai()) + "</h4>\n" +
                 "</body>\n" +
@@ -419,13 +423,10 @@ public class BillServiceImpl implements BillService {
             discountAmount = bill.getDiscountCode().getDiscountAmount();
         }
 
-        // Step 7: Calculate the total amount after discount
         double totalAmountAfterDiscount = totalProductAmount - discountAmount;
 
-        // Ensure the total amount doesn't go below zero
         totalAmountAfterDiscount = Math.max(totalAmountAfterDiscount, 0);
 
-        // Step 8: Update the Bill's amount and save it
         bill.setAmount(totalAmountAfterDiscount);
         billRepository.save(bill);
     }
@@ -453,15 +454,17 @@ public class BillServiceImpl implements BillService {
         billDto.setStatus(bill.getStatus());
         billDto.setUpdateDate(bill.getUpdateDate());
         CustomerDto customer = new CustomerDto();
-        if(bill.getCustomer() != null) {
+        if (bill.getCustomer() != null) {
             customer.setName(bill.getCustomer().getName());
             customer.setId(bill.getCustomer().getId());
             customer.setCode(bill.getCustomer().getCode());
             customer.setCode(bill.getCustomer().getCode());
         }
         billDto.setCustomer(customer);
+        billDto.setPhiShip(bill.getPhiShip());
+        bill.setThucThu(bill.getThucThu());
         Double total = Double.valueOf(0);
-        for (BillDetail billDetail:
+        for (BillDetail billDetail :
                 bill.getBillDetail()) {
             total += billDetail.getQuantity() * billDetail.getMomentPrice();
         }

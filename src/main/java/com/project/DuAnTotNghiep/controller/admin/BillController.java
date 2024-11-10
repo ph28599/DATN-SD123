@@ -103,7 +103,6 @@ public class BillController {
         return "admin/bill";
     }
 
-
     @GetMapping("/update-bill-status/{billId}")
     public String updateBillStatus(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
                                    @RequestParam(name = "sort", defaultValue = "createDate,desc") String sortField, @PathVariable Long billId,
@@ -115,7 +114,6 @@ public class BillController {
             e.printStackTrace();
             model.addAttribute("message", "Error updating status");
         }
-
         return "redirect:/admin/bill-list";
     }
 

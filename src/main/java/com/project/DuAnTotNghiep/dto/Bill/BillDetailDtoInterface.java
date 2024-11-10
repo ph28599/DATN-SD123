@@ -13,6 +13,10 @@ public interface BillDetailDtoInterface {
 
     Double getTongTien();
 
+    Double getThucThu();
+
+    Double getPhiShip();
+
     Double getTienKhuyenMai();
 
     String getTenKhachHang();
@@ -32,4 +36,5 @@ public interface BillDetailDtoInterface {
     String getVoucherName();
 
     LocalDateTime getCreatedDate();
+
 }

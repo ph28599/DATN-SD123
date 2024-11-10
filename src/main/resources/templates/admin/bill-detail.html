@@ -153,10 +153,10 @@
                                         th:if="${billdetail.tenKhachHang == null}">
                                         Khách lẻ
                                     </h6>
-<!--                                    <p class="mb-1" th:if="${billdetail.tenKhachHang != null}"-->
-<!--                                       th:text="${billdetail.diaChi}">-->
-<!--                                        4068 Post Avenue Newfolden, MN 56738-->
-<!--                                    </p>-->
+                                    <!--                                    <p class="mb-1" th:if="${billdetail.tenKhachHang != null}"-->
+                                    <!--                                       th:text="${billdetail.diaChi}">-->
+                                    <!--                                        4068 Post Avenue Newfolden, MN 56738-->
+                                    <!--                                    </p>-->
                                     <p th:if="${billdetail.tenKhachHang != null}"
                                        th:text="${billdetail.soDienThoai}">
                                         001-234-5678
@@ -190,6 +190,7 @@
                                 <span class="text-muted">Không sử dụng</span>
                             </div>
                         </div>
+
                         <div class="py-2 mb-4">
                             <div>
                                 <h5>Địa chỉ nhận hàng:</h5>
@@ -280,29 +281,23 @@
                                             th:text="${#numbers.formatDecimal(billdetail.tienKhuyenMai, 0, 'POINT', 0, 'COMMA')}">
                                             - $25.50
                                         </td>
+                                    </tr><tr>
+                                        <th class="border-0 text-end" colspan="5" scope="row">
+                                            Phí ship :
+                                        </th>
+                                        <td class="border-0 text-end"
+                                            th:text="${#numbers.formatDecimal(billdetail.phiShip, 0, 'POINT', 0, 'COMMA')}">
+                                            - $25.50
+                                        </td>
                                     </tr>
-                                    <!-- end tr -->
-<!--                                    <tr>-->
-<!--                                        <th class="border-0 text-end" colspan="5" scope="row">-->
-<!--                                            Phí ship :-->
-<!--                                        </th>-->
-<!--                                        <td class="border-0 text-end">-->
-<!--                                            <h4 class="m-0 fw-semibold"-->
-<!--                                                th:text="${#numbers.formatDecimal(billdetail.tienKhuyenMai, 0, 'POINT', 0, 'COMMA')}">-->
-<!--                                                $739.00-->
-<!--                                            </h4>-->
-<!--                                        </td>-->
-<!--                                    </tr>-->
-                                    <!-- end tr -->
 
-                                    <!-- end tr -->
                                     <tr>
                                         <th class="border-0 text-end" colspan="5" scope="row">
                                             Tổng thanh toán
                                         </th>
                                         <td class="border-0 text-end">
                                             <h4 class="m-0 fw-semibold"
-                                                th:text="${#numbers.formatDecimal(total - billdetail.tienKhuyenMai, 0, 'POINT', 0, 'COMMA')}">
+                                                th:text="${#numbers.formatDecimal(total - billdetail.tienKhuyenMai + billdetail.phiShip, 0, 'POINT', 0, 'COMMA')}">
                                                 $739.00
                                             </h4>
                                         </td>
