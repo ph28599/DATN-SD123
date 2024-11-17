@@ -148,4 +148,130 @@ public class AuthController {
             return "redirect:/reset-pass";
         }
     }
+
+    // staff
+    @GetMapping("/admin/account-create")
+    public String viewAddAccount(Model model){
+        Account  acc = new Account();
+        model.addAttribute("action", "/admin/account-save");
+        model.addAttribute("Account", acc);
+        return "admin/account-create";
+    }
+
+    @PostMapping("/admin/account-save")
+    public String saveregister1(Model model, @Validated @ModelAttribute AccountDto accountDto, RedirectAttributes redirectAttributes) throws MessagingException {
+
+        Account accountByEmail= accountService.findByEmail(accountDto.getEmail());
+
+        //Kiểm tra xem số điện thoại đã có tài khoản chưa
+        Account accountByPhone = accountRepository.findByCustomer_PhoneNumber(accountDto.getPhoneNumber());
+
+        if(accountByEmail !=null ){
+            redirectAttributes.addFlashAttribute("errorMessage","Email đã tồn tại !");
+            return "redirect:/admin/account-create";
+        }
+        if(accountByPhone != null) {
+            redirectAttributes.addFlashAttribute("errorMessage","Số điện thoại " + accountDto.getPhoneNumber() + " đã được đăng ký!");
+            return "redirect:/admin/account-create";
+        }
+
+        Account account = new Account();
+        account.setEmail(accountDto.getEmail());
+        Account account1 = accountRepository.findTopByOrderByIdDesc();
+        Long nextCode = (account1 == null) ? 1 : account1.getId() + 1;
+        String accCode = "TK" + String.format("%04d", nextCode);
+        account.setCode(accCode);
+
+        String encoded = passwordEncoder.encode(accountDto.getEmail());
+        account.setPassword(encoded);
+        account.setNonLocked(true);
+        Role role = new Role();
+        role.setId(2L);
+        account.setRole(role);
+        Customer customer = null;
+
+        //Nếu số điện thoại đã tồn tại
+        if(customerRepository.existsByPhoneNumber(accountDto.getPhoneNumber())) {
+            customer = customerRepository.findByPhoneNumber(accountDto.getPhoneNumber());
+            customer.setName(accountDto.getName());
+        }
+        else {
+            customer = new Customer();
+            customer.setName(accountDto.getName());
+            customer.setPhoneNumber(accountDto.getPhoneNumber());
+            Customer customerCurrent = customerRepository.findTopByOrderByIdDesc();
+            Long nextCodeAcc = (customerCurrent == null) ? 1 : customerCurrent.getId() + 1;
+            String productCode = "KH" + String.format("%04d", nextCodeAcc);
+            customer.setCode(productCode);
+
+        }
+        account.setCustomer(customer);
+        account.setCreateDate(LocalDateTime.now());
+        customerRepository.save(customer);
+        accountService.save(account);
+        redirectAttributes.addFlashAttribute("message", "Thêm nhân viên thành công");
+        return "redirect:/admin-only/account-staff";
+    }
+    //custom
+    @GetMapping("/admin/account-custom-create")
+    public String viewCustomAccount(Model model){
+        Account  acc = new Account();
+        model.addAttribute("action1", "/admin/custom-save");
+        model.addAttribute("Account", acc);
+        return "admin/account-custom-create";
+    }
+    @PostMapping("/admin/custom-save")
+    public String savecustom(Model model, @Validated @ModelAttribute AccountDto accountDto, RedirectAttributes redirectAttributes) throws MessagingException {
+
+        Account accountByEmail= accountService.findByEmail(accountDto.getEmail());
+
+        //Kiểm tra xem số điện thoại đã có tài khoản chưa
+        Account accountByPhone = accountRepository.findByCustomer_PhoneNumber(accountDto.getPhoneNumber());
+
+        if(accountByEmail !=null ){
+            redirectAttributes.addFlashAttribute("errorMessage","Email đã tồn tại !");
+            return "redirect:/admin/account-custom-create";
+        }
+        if(accountByPhone != null) {
+            redirectAttributes.addFlashAttribute("errorMessage","Số điện thoại " + accountDto.getPhoneNumber() + " đã được đăng ký!");
+            return "redirect:/admin/account-custom-create";
+        }
+
+        Account account = new Account();
+        account.setEmail(accountDto.getEmail());
+        Account account1 = accountRepository.findTopByOrderByIdDesc();
+        Long nextCode = (account1 == null) ? 1 : account1.getId() + 1;
+        String accCode = "TK" + String.format("%04d", nextCode);
+        account.setCode(accCode);
+
+        String encoded = passwordEncoder.encode(accountDto.getEmail());
+        account.setPassword(encoded);
+        account.setNonLocked(true);
+        Role role = new Role();
+        role.setId(3L);
+        account.setRole(role);
+        Customer customer = null;
+
+        //Nếu số điện thoại đã tồn tại
+        if(customerRepository.existsByPhoneNumber(accountDto.getPhoneNumber())) {
+            customer = customerRepository.findByPhoneNumber(accountDto.getPhoneNumber());
+            customer.setName(accountDto.getName());
+        }
+        else {
+            customer = new Customer();
+            customer.setName(accountDto.getName());
+            customer.setPhoneNumber(accountDto.getPhoneNumber());
+            Customer customerCurrent = customerRepository.findTopByOrderByIdDesc();
+            Long nextCodeAcc = (customerCurrent == null) ? 1 : customerCurrent.getId() + 1;
+            String productCode = "KH" + String.format("%04d", nextCodeAcc);
+            customer.setCode(productCode);
+
+        }
+        account.setCustomer(customer);
+        account.setCreateDate(LocalDateTime.now());
+        customerRepository.save(customer);
+        accountService.save(account);
+        redirectAttributes.addFlashAttribute("message", "Thêm khách hàng thành công");
+        return "redirect:/admin-only/account-custom";
+    }
 }

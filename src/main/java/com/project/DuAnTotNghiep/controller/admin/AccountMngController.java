@@ -47,4 +47,31 @@ public class AccountMngController {
         redirectAttributes.addFlashAttribute("message", "Tài khoản " + account.getEmail() + " đã đổi thành quyền thành công");
         return "redirect:/admin-only/account-management";
     }
+
+    //staff
+    @GetMapping("/admin-only/account-staff")
+    public String viewAccountPage(Model model) {
+        List<Account> accountList = accountService.findByRoleId();
+        model.addAttribute("accountList", accountList);
+        return "/admin/account-staff";
+    }
+    @PostMapping("/update-staff")
+    public String updateStaff(@ModelAttribute("email") String email, @ModelAttribute("name") String name,@ModelAttribute("phone") String phone, RedirectAttributes redirectAttributes) {
+        Account account = accountService.changeStaff(email,name,phone);
+        redirectAttributes.addFlashAttribute("message", "Tài khoản " + account.getEmail() + " sửa thành công");
+        return "redirect:/admin-only/account-staff";
+    }
+    // custom
+    @GetMapping("/admin-only/account-custom")
+    public String viewCustomPage(Model model) {
+        List<Account> accountList = accountService.findByRoleIdCustom();
+        model.addAttribute("accountList1", accountList);
+        return "/admin/account-custom";
+    }
+    @PostMapping("/update-custom")
+    public String updateCustom(@ModelAttribute("email") String email, @ModelAttribute("name") String name,@ModelAttribute("phone") String phone, RedirectAttributes redirectAttributes) {
+        Account account = accountService.changeStaff(email,name,phone);
+        redirectAttributes.addFlashAttribute("message", "Tài khoản " + account.getEmail() + " sửa thành công");
+        return "redirect:/admin-only/account-custom";
+    }
 }

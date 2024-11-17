@@ -29,4 +29,8 @@ public interface AccountService {
     void changePassword(ChangePasswordDto changePasswordDto);
 
     void resetPassword(Account account, String newPassword);
+
+    List<Account> findByRoleId() ;
+    List<Account> findByRoleIdCustom() ;
+    Account changeStaff(String email, String name , String phone);
 }
