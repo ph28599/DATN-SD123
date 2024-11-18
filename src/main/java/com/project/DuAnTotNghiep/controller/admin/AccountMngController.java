@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -56,8 +57,8 @@ public class AccountMngController {
         return "/admin/account-staff";
     }
     @PostMapping("/update-staff")
-    public String updateStaff(@ModelAttribute("email") String email, @ModelAttribute("name") String name,@ModelAttribute("phone") String phone, RedirectAttributes redirectAttributes) {
-        Account account = accountService.changeStaff(email,name,phone);
+    public String updateStaff(@ModelAttribute("email") String email, @ModelAttribute("name") String name,@ModelAttribute("phone") String phone,@ModelAttribute("birthDay") String birthDay, RedirectAttributes redirectAttributes) throws ParseException, ParseException {
+        Account account = accountService.changeStaff(email,name,phone,birthDay);
         redirectAttributes.addFlashAttribute("message", "Tài khoản " + account.getEmail() + " sửa thành công");
         return "redirect:/admin-only/account-staff";
     }
@@ -69,8 +70,8 @@ public class AccountMngController {
         return "/admin/account-custom";
     }
     @PostMapping("/update-custom")
-    public String updateCustom(@ModelAttribute("email") String email, @ModelAttribute("name") String name,@ModelAttribute("phone") String phone, RedirectAttributes redirectAttributes) {
-        Account account = accountService.changeStaff(email,name,phone);
+    public String updateCustom(@ModelAttribute("email") String email, @ModelAttribute("name") String name,@ModelAttribute("phone") String phone,@ModelAttribute("birthDay") String birthDay, RedirectAttributes redirectAttributes) throws ParseException {
+        Account account = accountService.changeStaff(email,name,phone,birthDay);
         redirectAttributes.addFlashAttribute("message", "Tài khoản " + account.getEmail() + " sửa thành công");
         return "redirect:/admin-only/account-custom";
     }

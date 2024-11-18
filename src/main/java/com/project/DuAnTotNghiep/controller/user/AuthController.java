@@ -199,6 +199,7 @@ public class AuthController {
             customer = new Customer();
             customer.setName(accountDto.getName());
             customer.setPhoneNumber(accountDto.getPhoneNumber());
+            account.setBirthDay(accountDto.getBirthDay());
             Customer customerCurrent = customerRepository.findTopByOrderByIdDesc();
             Long nextCodeAcc = (customerCurrent == null) ? 1 : customerCurrent.getId() + 1;
             String productCode = "KH" + String.format("%04d", nextCodeAcc);
@@ -261,6 +262,7 @@ public class AuthController {
             customer = new Customer();
             customer.setName(accountDto.getName());
             customer.setPhoneNumber(accountDto.getPhoneNumber());
+            account.setBirthDay(accountDto.getBirthDay());
             Customer customerCurrent = customerRepository.findTopByOrderByIdDesc();
             Long nextCodeAcc = (customerCurrent == null) ? 1 : customerCurrent.getId() + 1;
             String productCode = "KH" + String.format("%04d", nextCodeAcc);
