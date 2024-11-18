@@ -964,7 +964,7 @@
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
                             $('#loading-overlay').hide();
-                           Swal.fire({
+                            Swal.fire({
                                 title: 'Đặt hàng',
                                 text: 'Đặt hàng thành công',
                                 icon: 'success',
@@ -973,11 +973,6 @@
                                 cancelButtonText: 'Hủy'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    orderDetails.forEach(detail => {
-                                        const row = $(`.cartId[value=${detail.productDetailId}]`).closest('.table-row');
-                                        row.remove();
-                                    });
-                                    calculateTotal();
                                     window.location.href = '/getproduct';
                                 } else {
                                     orderDetails.forEach(detail => {
@@ -987,6 +982,7 @@
                                     calculateTotal();
                                 }
                             });
+
                         },
                         error: function (xhr, status, error) {
                             $('#loading-overlay').hide();
