@@ -1,10 +1,10 @@
 package com.project.DuAnTotNghiep.service.serviceImpl;
 
 import com.project.DuAnTotNghiep.dto.Cart.CartDto;
+import com.project.DuAnTotNghiep.dto.Cart.ProductCart;
 import com.project.DuAnTotNghiep.dto.Order.OrderDetailDto;
 import com.project.DuAnTotNghiep.dto.Order.OrderDto;
 import com.project.DuAnTotNghiep.dto.Product.ProductDetailDto;
-import com.project.DuAnTotNghiep.dto.Cart.ProductCart;
 import com.project.DuAnTotNghiep.entity.*;
 import com.project.DuAnTotNghiep.entity.enumClass.BillStatus;
 import com.project.DuAnTotNghiep.entity.enumClass.InvoiceType;
@@ -50,7 +50,6 @@ public class CartServiceImpl implements CartService {
         this.paymentRepository = paymentRepository;
         this.paymentMethodRepository = paymentMethodRepository;
     }
-
     @Override
     public List<CartDto> getAllCart() {
         List<Cart> carts = cartRepository.findAll();
@@ -86,10 +85,9 @@ public class CartServiceImpl implements CartService {
             productDetailDto.setColor(cart.getProductDetail().getColor());
 
             ProductDiscount productDiscount = productDiscountRepository.findValidDiscountByProductDetailId(cart.getProductDetail().getId());
-            if(productDiscount != null) {
+            if (productDiscount != null) {
                 productDetailDto.setDiscountedPrice(productDiscount.getDiscountedAmount());
             }
-
             CartDto cartDto = new CartDto();
             cartDto.setId(cart.getId());
             cartDto.setQuantity(cart.getQuantity());
@@ -108,7 +106,7 @@ public class CartServiceImpl implements CartService {
         Account account = UserLoginUtil.getCurrentLogin();
         cart.setAccount(account);
 
-        ProductDetail productDetail = productDetailRepository.findById(cartDto.getDetail().getId()).orElseThrow(() -> new NotFoundException("Product not found") );
+        ProductDetail productDetail = productDetailRepository.findById(cartDto.getDetail().getId()).orElseThrow(() -> new NotFoundException("Product not found"));
 
         cart.setProductDetail(productDetail);
         int quantityAdding = cartDto.getQuantity();
@@ -122,16 +120,16 @@ public class CartServiceImpl implements CartService {
             existsCart.setQuantity(quantityNeedToAdd);
             existsCart.setUpdateDate(LocalDateTime.now());
 
-            if(quantityRemaining == 0) {
+            if (quantityRemaining == 0) {
                 throw new ShopApiException(HttpStatus.BAD_REQUEST, "Sản phẩm có thuộc tính này đã hết hàng");
             }
 
-            if(quantityRemaining < quantityNeedToAdd) {
+            if (quantityRemaining < quantityNeedToAdd) {
                 throw new ShopApiException(HttpStatus.BAD_REQUEST, "Số lượng thêm vào giỏ hàng lớn hơn số lượng tồn");
             }
             cartRepository.save(existsCart);
-        }else {
-            if(quantityRemaining < quantityAdding) {
+        } else {
+            if (quantityRemaining < quantityAdding) {
                 throw new ShopApiException(HttpStatus.BAD_REQUEST, "Số lượng thêm vào giỏ hàng lớn hơn số lượng tồn");
             }
 
@@ -142,13 +140,12 @@ public class CartServiceImpl implements CartService {
         }
 
     }
-
     @Override
     public void updateCart(CartDto cartDto) throws NotFoundException {
-        Cart cart = cartRepository.findById(cartDto.getId()).orElseThrow( () -> new NotFoundException("Cart not found") );
+        Cart cart = cartRepository.findById(cartDto.getId()).orElseThrow(() -> new NotFoundException("Cart not found"));
         int quantityAdding = cartDto.getQuantity();
         int quantityRemaining = cart.getProductDetail().getQuantity();
-        if(quantityAdding > quantityRemaining) {
+        if (quantityAdding > quantityRemaining) {
             throw new ShopApiException(HttpStatus.BAD_REQUEST, "Xin lỗi, số lượng sản phẩm này chỉ còn: " + quantityRemaining);
         }
         cart.setQuantity(cartDto.getQuantity());
@@ -177,9 +174,9 @@ public class CartServiceImpl implements CartService {
             Account account = UserLoginUtil.getCurrentLogin();
             bill.setCustomer(account.getCustomer());
         }
-
         Double total = 0.0;
         List<BillDetail> billDetailList = new ArrayList<>();
+        List<Long> productDetailIds = new ArrayList<>(); // Danh sách productDetailId
 
         for (OrderDetailDto item : orderDto.getOrderDetailDtos()) {
             BillDetail billDetail = new BillDetail();
@@ -212,8 +209,8 @@ public class CartServiceImpl implements CartService {
             productDetail.setQuantity(productDetail.getQuantity() - item.getQuantity());
             productDetailRepository.save(productDetail);
             billDetailList.add(billDetail);
+            productDetailIds.add(item.getProductDetailId()); // Thêm vào danh sách productDetailId
         }
-
         if (orderDto.getVoucherId() != null) {
             DiscountCode discountCode = discountCodeRepository.findById(orderDto.getVoucherId())
                     .orElseThrow(() -> new ShopApiException(HttpStatus.BAD_REQUEST, "Không tìm thấy voucher"));
@@ -236,9 +233,7 @@ public class CartServiceImpl implements CartService {
         PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDto.getPaymentMethodId())
                 .orElseThrow(() -> new NotFoundException("Payment not found"));
         bill.setPaymentMethod(paymentMethod);
-
         Bill billNew = billRepository.save(bill);
-
         if (paymentMethod.getName() == PaymentMethodName.TIEN_MAT) {
             Payment payment = new Payment();
             payment.setPaymentDate(LocalDateTime.now());
@@ -256,10 +251,8 @@ public class CartServiceImpl implements CartService {
             payment.setStatusExchange(0);
             paymentRepository.save(payment);
         }
-
-        cartRepository.deleteAllByAccount_Id(UserLoginUtil.getCurrentLogin().getId());
+        cartRepository.deleteByAccount_IdAndProductDetail_IdIn(UserLoginUtil.getCurrentLogin().getId(), productDetailIds);
     }
-
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -366,12 +359,10 @@ public class CartServiceImpl implements CartService {
         );
     }
 
-
     @Override
     public void deleteCart(Long id) {
         cartRepository.deleteById(id);
     }
-
 
 //    @Autowired
 //    private CartRepository cartRepository;

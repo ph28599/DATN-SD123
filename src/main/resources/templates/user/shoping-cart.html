@@ -973,6 +973,11 @@
                                 cancelButtonText: 'Hủy'
                             }).then((result) => {
                                 if (result.isConfirmed) {
+                                    orderDetails.forEach(detail => {
+                                        const row = $(`.cartId[value=${detail.productDetailId}]`).closest('.table-row');
+                                        row.remove();
+                                    });
+                                    calculateTotal();
                                     window.location.href = '/getproduct';
                                 } else {
                                     orderDetails.forEach(detail => {
@@ -982,7 +987,6 @@
                                     calculateTotal();
                                 }
                             });
-
                         },
                         error: function (xhr, status, error) {
                             $('#loading-overlay').hide();
