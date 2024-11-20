@@ -6,6 +6,7 @@ import com.project.DuAnTotNghiep.dto.Account.ChangePasswordDto;
 import com.project.DuAnTotNghiep.dto.Statistic.UserStatistic;
 import com.project.DuAnTotNghiep.entity.Account;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface AccountService {
@@ -29,4 +30,8 @@ public interface AccountService {
     void changePassword(ChangePasswordDto changePasswordDto);
 
     void resetPassword(Account account, String newPassword);
+
+    List<Account> findByRoleId() ;
+    List<Account> findByRoleIdCustom() ;
+    Account changeStaff(String email, String name , String phone, String birthDay) throws ParseException;
 }

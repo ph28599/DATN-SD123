@@ -88,6 +88,8 @@
                        aria-expanded="false"> <i class="menu-icon fas fa-user"></i>Quản lý tài khoản</a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="fas fa-chart-line"></i><a th:href="@{/admin-only/account-management}">Tài khoản</a></li>
+                        <li><i class="fas fa-chart-line"></i><a th:href="@{/admin-only/account-staff}">Nhân viên</a></li>
+                        <li><i class="fas fa-chart-line"></i><a th:href="@{/admin-only/account-custom}">Khách hàng</a></li>
                     </ul>
                 </li>
             </ul>
@@ -112,9 +114,8 @@
                 </a>
 
                 <div class="user-menu">
-                    <a class="nav-link" th:href="@{/profile}"><i class="fa fa-user"></i> Cập nhật thông tin</a>
-                    <a class="nav-link" th:href="@{/}"><i class="fa fa-user"></i> Trang khách</a>
-
+<!--                    <a class="nav-link" th:href="@{/profile}"><i class="fa fa-user"></i> Cập nhật thông tin</a>-->
+<!--                    <a class="nav-link" th:href="@{/}"><i class="fa fa-user"></i> Trang khách</a>-->
                     <a class="nav-link" th:href="@{/user_logout}"><i class="fa fa-power-off"></i> Đăng xuất</a>
                 </div>
             </div>

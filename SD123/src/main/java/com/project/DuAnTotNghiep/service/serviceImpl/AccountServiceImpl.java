@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -158,5 +160,28 @@ public class AccountServiceImpl implements AccountService {
         account.setUpdateDate(LocalDateTime.now());
         account.setEmail(accountDto.getEmail());
         return account;
+    }
+
+    @Override
+    public List<Account> findByRoleId() {
+        return  accountRepository.findByRoleId();
+    }
+
+    @Override
+    public List<Account> findByRoleIdCustom() {
+        return  accountRepository.findByRoleIdCustom();
+    }
+
+    @Override
+    public Account changeStaff(String email, String name, String phone,String birthDay) throws ParseException {
+        Account account = accountRepository.findByEmail(email);
+        Customer customer = customerRepository.findByAccount_Id(account.getId());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date parsedDate = dateFormat.parse(birthDay);
+        account.setBirthDay(parsedDate);
+        customer.setPhoneNumber(phone);  // cập nhật số điện thoại
+        customer.setName(name);  // cập nhật tên
+        customerRepository.save(customer);
+        return accountRepository.save(account);
     }
 }

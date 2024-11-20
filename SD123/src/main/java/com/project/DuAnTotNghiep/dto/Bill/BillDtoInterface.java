@@ -13,6 +13,7 @@ public interface BillDtoInterface {
     String getSoDienThoai();
     LocalDateTime getNgayTao();
     Double getTongTien();
+    Double getThucThu();
     BillStatus getTrangThai();
     InvoiceType getLoaiDon();
     String getHinhThucThanhToan();

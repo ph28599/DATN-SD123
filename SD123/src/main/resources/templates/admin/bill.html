@@ -37,7 +37,7 @@
                         <option value="CHO_GIAO_HANG" th:selected="${trangThai == 'CHO_GIAO_HANG'}">Chờ giao hàng</option>
                         <option value="HOAN_THANH" th:selected="${trangThai == 'HOAN_THANH'}">Hoàn thành</option>
                         <option value="HUY" th:selected="${trangThai == 'HUY'}">Hủy</option>
-                        <option value="TRA_HANG" th:selected="${trangThai == 'TRA_HANG'}">Trả hàng</option>
+<!--                        <option value="TRA_HANG" th:selected="${trangThai == 'TRA_HANG'}">Trả hàng</option>-->
                     </select>
                 </div>
                 <div class="form-group col-md-2">
@@ -80,7 +80,7 @@
                 <a th:href="@{/admin/bill-list(page=0, sort=${sortField == 'code' && sortDirection == 'desc' ? 'code,asc' : 'code,desc'}, maDinhDanh=${maDinhDanh}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, trangThai=${trangThai}, loaiDon=${loaiDon}, hoVaTen=${hoVaTen}, soDienThoai=${soDienThoai})}"
                    class="sort-link">↓</a>
             </th>
-<!--            <th scope="col">Mã đổi trả</th>-->
+            <!--            <th scope="col">Mã đổi trả</th>-->
             <th scope="col">Họ và tên
                 <a th:href="@{/admin/bill-list(page=0, sort=${sortField == 'hoVaTen' && sortDirection == 'asc' ? 'hoVaTen,desc' : 'hoVaTen,asc'}, maDinhDanh=${maDinhDanh}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, trangThai=${trangThai}, loaiDon=${loaiDon}, hoVaTen=${hoVaTen}, soDienThoai=${soDienThoai})}"
                    class="sort-link">↑</a>
@@ -111,7 +111,7 @@
         <tbody>
         <tr th:each="item:${items}" class="clickable-row" th:data-maHoaDon="${item.maHoaDon}">
             <th scope="row" th:text="${item.maDinhDanh}">HD09347</th>
-<!--            <th><a class="text-primary" th:href="@{'/admin-only/bill-return-detail-code/' + ${item.maDoiTra} }" th:text="${item.maDoiTra}"></a></th>-->
+            <!--            <th><a class="text-primary" th:href="@{'/admin-only/bill-return-detail-code/' + ${item.maDoiTra} }" th:text="${item.maDoiTra}"></a></th>-->
             <td th:text="${item.hoVaTen}">Mark</td>
             <td th:text="${item.soDienThoai}">03843234</td>
             <td th:text="${#temporals.format(item.ngayTao, 'dd-MM-yyyy HH:mm')}">03843234</td>
@@ -138,26 +138,26 @@
             <td>
 
                     <span class="text-warning p-1 rounded border border-warning font-weight-bold"
-                         th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_XAC_NHAN}"><i class="fas fa-check-square"></i>&nbsp;Chờ xác nhận
+                          th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_XAC_NHAN}"><i class="fas fa-check-square"></i>&nbsp;Chờ xác nhận
                     </span>
-                    <span class="text-secondary p-1 rounded border border-secondary font-weight-bold"
+                <span class="text-secondary p-1 rounded border border-secondary font-weight-bold"
 
-                         th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_LAY_HANG}"><i class="fas fa-check-square"></i>&nbsp;Chờ lấy hàng
+                      th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_LAY_HANG}"><i class="fas fa-check-square"></i>&nbsp;Chờ lấy hàng
                     </span>
-                    <span class="text-primary p-1 rounded border border-primary font-weight-bold"
-                         th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_GIAO_HANG}"><i class="fas fa-check-square"></i>&nbsp;Chờ giao hàng
+                <span class="text-primary p-1 rounded border border-primary font-weight-bold"
+                      th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_GIAO_HANG}"><i class="fas fa-check-square"></i>&nbsp;Chờ giao hàng
                     </span>
 
-                    <span  class="text-success p-1 rounded border border-success font-weight-bold"
-                          th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HOAN_THANH}"><i class="fas fa-check-square"></i>&nbsp;Hoàn
+                <span  class="text-success p-1 rounded border border-success font-weight-bold"
+                       th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HOAN_THANH}"><i class="fas fa-check-square"></i>&nbsp;Hoàn
                         thành
                     </span>
-                    <span  class="text-dark p-1 rounded border border-dark font-weight-bold"
+                <span  class="text-dark p-1 rounded border border-dark font-weight-bold"
                        th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).TRA_HANG}"><i class="fas fa-check-square"></i>&nbsp;
                     Đổi trả
                     </span>
 
-                    <span th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HUY}" class="text-danger p-1 rounded border border-danger font-weight-bold">
+                <span th:if="${item.trangThai == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HUY}" class="text-danger p-1 rounded border border-danger font-weight-bold">
                         <i class="fa fa-times-circle"></i>&nbsp;Hủy
                     </span>
 
@@ -175,8 +175,8 @@
                     <form th:action="@{'/admin/update-bill-status/' + ${item.maHoaDon}}" method="get">
                         <span type="button" th:if="${item.trangThai != T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HOAN_THANH &&
                 item.trangThai != T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HUY && item.trangThai != T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).TRA_HANG}"
-                                class=" hover-green btn-update-status" data--toggle="tooltip" data-placement="top" th:data-status="${item.trangThai}"
-                                title="Chuyển sang trạng thái tiếp">
+                              class=" hover-green btn-update-status" data--toggle="tooltip" data-placement="top" th:data-status="${item.trangThai}"
+                              title="Chuyển sang trạng thái tiếp">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 18a2 2 0 1 0 4 0a2 2 0 1 0-4 0m12 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0M6 12v-2a6 6 0 1 1 12 0v2"/><path d="m15 9l3 3l3-3"/></g></svg>
                         </span>
                     </form>
@@ -241,10 +241,10 @@
                     confirmButtonText: 'Xác nhận',
                     reverseButtons: true
                 }).then((result) => {
-                        if (result.isConfirmed) {
-                            $(this).closest('form').submit();
-                        }
-                    });
+                    if (result.isConfirmed) {
+                        $(this).closest('form').submit();
+                    }
+                });
             })
 
             $('.btn-update-status').on('click', function (e) {

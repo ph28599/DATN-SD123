@@ -21,4 +21,11 @@ public interface AccountRepository extends JpaRepository<Account, Long>{
     Account findByCustomer_PhoneNumber(String phoneNumber);
 
     Account findTopByOrderByIdDesc();
+
+    @Query(value = "SELECT * FROM account WHERE role_id = 2", nativeQuery = true)
+    List<Account> findByRoleId();
+
+    @Query(value = "SELECT * FROM account WHERE role_id = 3", nativeQuery = true)
+    List<Account> findByRoleIdCustom();
+
 }

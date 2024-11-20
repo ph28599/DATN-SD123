@@ -1,11 +1,12 @@
 package com.project.DuAnTotNghiep.repository;
 
-import com.project.DuAnTotNghiep.dto.Bill.*;
+import com.project.DuAnTotNghiep.dto.Bill.BillDetailDtoInterface;
+import com.project.DuAnTotNghiep.dto.Bill.BillDetailProduct;
+import com.project.DuAnTotNghiep.dto.Bill.BillDtoInterface;
 import com.project.DuAnTotNghiep.dto.Refund.RefundDto;
 import com.project.DuAnTotNghiep.dto.Statistic.OrderStatistic;
 import com.project.DuAnTotNghiep.entity.Bill;
 import com.project.DuAnTotNghiep.entity.BillDetail;
-import com.project.DuAnTotNghiep.entity.ProductDetail;
 import com.project.DuAnTotNghiep.entity.enumClass.BillStatus;
 import com.project.DuAnTotNghiep.entity.enumClass.InvoiceType;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,7 @@ import java.util.List;
 public interface BillRepository extends JpaRepository<Bill, Long>, JpaSpecificationExecutor<Bill> {
 
     @Query(value = "SELECT DISTINCT b.id AS maHoaDon,b.code AS maDinhDanh, a.name AS hoVaTen, a.phoneNumber " +
-            "AS soDienThoai,b.createDate AS ngayTao, b.amount AS tongTien, b.status AS trangThai, b.invoiceType " +
+            "AS soDienThoai,b.createDate AS ngayTao, b.amount AS tongTien,b.thucThu as thucThu, b.status AS trangThai, b.invoiceType " +
             "AS loaiDon, pm.name AS hinhThucThanhToan, coalesce(br.code, '') as maDoiTra, pmt.orderId as maGiaoDich " +
             "FROM Bill b " +
             "JOIN Payment pmt on b.id = pmt.bill.id " +
@@ -72,7 +73,7 @@ public interface BillRepository extends JpaRepository<Bill, Long>, JpaSpecificat
 
 
     @Query(value = "select distinct b.id as maDonHang,b.code as maDinhDanh,b.billing_address as diaChi," +
-            " b.amount as tongTien,b.promotion_price as tienKhuyenMai,a.name as tenKhachHang," +
+            " b.amount as tongTien,b.promotion_price as tienKhuyenMai,b.phi_ship as phiShip, a.name as tenKhachHang," +
             "a.phone_number as soDienThoai,a.email as email, b.status as trangThaiDonHang, pmt.order_id as maGiaoDich, " +
             "pm.name as phuongThucThanhToan,b.invoice_type as loaiHoaDon, dc.code as voucherName, b.create_date as createdDate " +
             "from bill b full join customer a on b.customer_id=a.id full join discount_code dc on b.discount_code_id=dc.id" +

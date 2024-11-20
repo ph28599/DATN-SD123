@@ -1,10 +1,10 @@
 package com.project.DuAnTotNghiep.service.serviceImpl;
 
 import com.project.DuAnTotNghiep.dto.Cart.CartDto;
+import com.project.DuAnTotNghiep.dto.Cart.ProductCart;
 import com.project.DuAnTotNghiep.dto.Order.OrderDetailDto;
 import com.project.DuAnTotNghiep.dto.Order.OrderDto;
 import com.project.DuAnTotNghiep.dto.Product.ProductDetailDto;
-import com.project.DuAnTotNghiep.dto.Cart.ProductCart;
 import com.project.DuAnTotNghiep.entity.*;
 import com.project.DuAnTotNghiep.entity.enumClass.BillStatus;
 import com.project.DuAnTotNghiep.entity.enumClass.InvoiceType;
@@ -50,7 +50,6 @@ public class CartServiceImpl implements CartService {
         this.paymentRepository = paymentRepository;
         this.paymentMethodRepository = paymentMethodRepository;
     }
-
     @Override
     public List<CartDto> getAllCart() {
         List<Cart> carts = cartRepository.findAll();
@@ -86,10 +85,9 @@ public class CartServiceImpl implements CartService {
             productDetailDto.setColor(cart.getProductDetail().getColor());
 
             ProductDiscount productDiscount = productDiscountRepository.findValidDiscountByProductDetailId(cart.getProductDetail().getId());
-            if(productDiscount != null) {
+            if (productDiscount != null) {
                 productDetailDto.setDiscountedPrice(productDiscount.getDiscountedAmount());
             }
-
             CartDto cartDto = new CartDto();
             cartDto.setId(cart.getId());
             cartDto.setQuantity(cart.getQuantity());
@@ -108,7 +106,7 @@ public class CartServiceImpl implements CartService {
         Account account = UserLoginUtil.getCurrentLogin();
         cart.setAccount(account);
 
-        ProductDetail productDetail = productDetailRepository.findById(cartDto.getDetail().getId()).orElseThrow(() -> new NotFoundException("Product not found") );
+        ProductDetail productDetail = productDetailRepository.findById(cartDto.getDetail().getId()).orElseThrow(() -> new NotFoundException("Product not found"));
 
         cart.setProductDetail(productDetail);
         int quantityAdding = cartDto.getQuantity();
@@ -122,16 +120,16 @@ public class CartServiceImpl implements CartService {
             existsCart.setQuantity(quantityNeedToAdd);
             existsCart.setUpdateDate(LocalDateTime.now());
 
-            if(quantityRemaining == 0) {
+            if (quantityRemaining == 0) {
                 throw new ShopApiException(HttpStatus.BAD_REQUEST, "Sản phẩm có thuộc tính này đã hết hàng");
             }
 
-            if(quantityRemaining < quantityNeedToAdd) {
+            if (quantityRemaining < quantityNeedToAdd) {
                 throw new ShopApiException(HttpStatus.BAD_REQUEST, "Số lượng thêm vào giỏ hàng lớn hơn số lượng tồn");
             }
             cartRepository.save(existsCart);
-        }else {
-            if(quantityRemaining < quantityAdding) {
+        } else {
+            if (quantityRemaining < quantityAdding) {
                 throw new ShopApiException(HttpStatus.BAD_REQUEST, "Số lượng thêm vào giỏ hàng lớn hơn số lượng tồn");
             }
 
@@ -142,13 +140,12 @@ public class CartServiceImpl implements CartService {
         }
 
     }
-
     @Override
     public void updateCart(CartDto cartDto) throws NotFoundException {
-        Cart cart = cartRepository.findById(cartDto.getId()).orElseThrow( () -> new NotFoundException("Cart not found") );
+        Cart cart = cartRepository.findById(cartDto.getId()).orElseThrow(() -> new NotFoundException("Cart not found"));
         int quantityAdding = cartDto.getQuantity();
         int quantityRemaining = cart.getProductDetail().getQuantity();
-        if(quantityAdding > quantityRemaining) {
+        if (quantityAdding > quantityRemaining) {
             throw new ShopApiException(HttpStatus.BAD_REQUEST, "Xin lỗi, số lượng sản phẩm này chỉ còn: " + quantityRemaining);
         }
         cart.setQuantity(cartDto.getQuantity());
@@ -171,62 +168,73 @@ public class CartServiceImpl implements CartService {
         bill.setStatus(BillStatus.CHO_XAC_NHAN);
         bill.setPromotionPrice(orderDto.getPromotionPrice());
         bill.setReturnStatus(false);
+        bill.setPhiShip(orderDto.getShippingFee());
+
         if (UserLoginUtil.getCurrentLogin() != null) {
             Account account = UserLoginUtil.getCurrentLogin();
             bill.setCustomer(account.getCustomer());
         }
-        Double total = Double.valueOf(0);
+        Double total = 0.0;
         List<BillDetail> billDetailList = new ArrayList<>();
-        for (OrderDetailDto item:
-             orderDto.getOrderDetailDtos()) {
+        List<Long> productDetailIds = new ArrayList<>(); // Danh sách productDetailId
+
+        for (OrderDetailDto item : orderDto.getOrderDetailDtos()) {
             BillDetail billDetail = new BillDetail();
             billDetail.setBill(bill);
             billDetail.setQuantity(item.getQuantity());
-            ProductDetail productDetail = productDetailRepository.findById(item.getProductDetailId()).orElseThrow(() -> new NotFoundException("Product not found"));
+            ProductDetail productDetail = productDetailRepository.findById(item.getProductDetailId())
+                    .orElseThrow(() -> new NotFoundException("Product not found"));
             billDetail.setProductDetail(productDetail);
             Product product = productRepository.findByProductDetail_Id(productDetail.getId());
-            if(product.getStatus() == 2) {
-                throw new ShopApiException(HttpStatus.BAD_REQUEST, "Sản phẩm " + productDetail.getProduct().getName() + "-" + productDetail.getSize().getName() +  "-" + productDetail.getColor().getName()  + " đã ngừng bán");
 
+            if (product.getStatus() == 2) {
+                throw new ShopApiException(HttpStatus.BAD_REQUEST, "Sản phẩm " + productDetail.getProduct().getName()
+                        + "-" + productDetail.getSize().getName() + "-" + productDetail.getColor().getName()
+                        + " đã ngừng bán");
             }
-            if(productDetail.getQuantity() - item.getQuantity() < 0) {
-                throw new ShopApiException(HttpStatus.BAD_REQUEST, "Sản phẩm " + productDetail.getProduct().getName() + "-" + productDetail.getSize().getName() +  "-" + productDetail.getColor().getName()  + " chỉ còn lại " + productDetail.getQuantity());
+            if (productDetail.getQuantity() - item.getQuantity() < 0) {
+                throw new ShopApiException(HttpStatus.BAD_REQUEST, "Sản phẩm " + productDetail.getProduct().getName()
+                        + "-" + productDetail.getSize().getName() + "-" + productDetail.getColor().getName()
+                        + " chỉ còn lại " + productDetail.getQuantity());
             }
-
             ProductDiscount productDiscount = productDiscountRepository.findValidDiscountByProductDetailId(productDetail.getId());
-            if(productDiscount != null) {
+            if (productDiscount != null) {
                 billDetail.setMomentPrice(productDiscount.getDiscountedAmount());
-                total+=productDiscount.getDiscountedAmount() * item.getQuantity();
-            }else {
+                total += productDiscount.getDiscountedAmount() * item.getQuantity();
+            } else {
                 billDetail.setMomentPrice(productDetail.getPrice());
-                total+=productDetail.getPrice() * item.getQuantity();
+                total += productDetail.getPrice() * item.getQuantity();
             }
 
             productDetail.setQuantity(productDetail.getQuantity() - item.getQuantity());
             productDetailRepository.save(productDetail);
             billDetailList.add(billDetail);
-
+            productDetailIds.add(item.getProductDetailId()); // Thêm vào danh sách productDetailId
         }
-
-        if(orderDto.getVoucherId() != null) {
-            DiscountCode discountCode = discountCodeRepository.findById(orderDto.getVoucherId()).orElseThrow(() -> new ShopApiException(HttpStatus.BAD_REQUEST, "Không tìm thấy voucher"));
+        if (orderDto.getVoucherId() != null) {
+            DiscountCode discountCode = discountCodeRepository.findById(orderDto.getVoucherId())
+                    .orElseThrow(() -> new ShopApiException(HttpStatus.BAD_REQUEST, "Không tìm thấy voucher"));
             Integer currentQuaCode = discountCode.getMaximumUsage();
-            if(currentQuaCode == 0) {
+
+            if (currentQuaCode == 0) {
                 throw new ShopApiException(HttpStatus.BAD_REQUEST, "Mã giảm giá đã hết");
             }
+
             discountCode.setMaximumUsage(currentQuaCode - 1);
             discountCodeRepository.save(discountCode);
             bill.setDiscountCode(discountCode);
         }
-
         bill.setAmount(total);
         bill.setBillDetail(billDetailList);
-        PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDto.getPaymentMethodId()).orElseThrow(() -> new NotFoundException("Payment not found"));
+
+        double thucThu = total + orderDto.getShippingFee() - orderDto.getPromotionPrice();
+        bill.setThucThu(thucThu);
+
+        PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDto.getPaymentMethodId())
+                .orElseThrow(() -> new NotFoundException("Payment not found"));
         bill.setPaymentMethod(paymentMethod);
-
         Bill billNew = billRepository.save(bill);
-
-        if(paymentMethod.getName() == PaymentMethodName.TIEN_MAT) {
+        if (paymentMethod.getName() == PaymentMethodName.TIEN_MAT) {
             Payment payment = new Payment();
             payment.setPaymentDate(LocalDateTime.now());
             payment.setOrderStatus("1");
@@ -237,14 +245,13 @@ public class CartServiceImpl implements CartService {
             paymentRepository.save(payment);
         }
 
-        if(paymentMethod.getName() == PaymentMethodName.CHUYEN_KHOAN) {
+        if (paymentMethod.getName() == PaymentMethodName.CHUYEN_KHOAN) {
             Payment payment = paymentRepository.findByOrderId(orderDto.getOrderId());
             payment.setBill(billNew);
             payment.setStatusExchange(0);
             paymentRepository.save(payment);
         }
-
-        cartRepository.deleteAllByAccount_Id(UserLoginUtil.getCurrentLogin().getId());
+        cartRepository.deleteByAccount_IdAndProductDetail_IdIn(UserLoginUtil.getCurrentLogin().getId(), productDetailIds);
     }
 
     @Override
@@ -263,57 +270,66 @@ public class CartServiceImpl implements CartService {
         bill.setStatus(BillStatus.HOAN_THANH);
         bill.setPromotionPrice(orderDto.getPromotionPrice());
         bill.setReturnStatus(false);
+
+        bill.setPhiShip(orderDto.getShippingFee());
+
         Customer customer = null;
-        if(orderDto.getCustomer().getId() != null) {
-             customer = customerRepository.findById(orderDto.getCustomer().getId()).orElseThrow(() -> new NotFoundException("Customer not found"));
+        if (orderDto.getCustomer().getId() != null) {
+            customer = customerRepository.findById(orderDto.getCustomer().getId())
+                    .orElseThrow(() -> new NotFoundException("Customer not found"));
         }
         bill.setCustomer(customer);
-        Double total = Double.valueOf(0);
+
+        Double total = 0.0;
         List<BillDetail> billDetailList = new ArrayList<>();
-        for (OrderDetailDto item:
-                orderDto.getOrderDetailDtos()) {
+
+        for (OrderDetailDto item : orderDto.getOrderDetailDtos()) {
             BillDetail billDetail = new BillDetail();
             billDetail.setBill(bill);
             billDetail.setQuantity(item.getQuantity());
-            ProductDetail productDetail = productDetailRepository.findById(item.getProductDetailId()).orElseThrow(() -> new NotFoundException("Product not found"));
+            ProductDetail productDetail = productDetailRepository.findById(item.getProductDetailId())
+                    .orElseThrow(() -> new NotFoundException("Product not found"));
             billDetail.setProductDetail(productDetail);
 
             ProductDiscount productDiscount = productDiscountRepository.findValidDiscountByProductDetailId(productDetail.getId());
 
-            if(productDetail.getQuantity() - item.getQuantity() < -1) {
-                throw new ShopApiException(HttpStatus.BAD_REQUEST, "Sản phẩm " + productDetail.getProduct().getName() + "-" + productDetail.getSize().getName() +  "-" + productDetail.getColor().getName()  + " chỉ còn lại " + productDetail.getQuantity());
+            if (productDetail.getQuantity() - item.getQuantity() < 0) {
+                throw new ShopApiException(HttpStatus.BAD_REQUEST, "Sản phẩm " + productDetail.getProduct().getName()
+                        + "-" + productDetail.getSize().getName() + "-" + productDetail.getColor().getName()
+                        + " chỉ còn lại " + productDetail.getQuantity());
             }
-
-            if(productDiscount != null) {
+            if (productDiscount != null) {
                 billDetail.setMomentPrice(productDiscount.getDiscountedAmount());
-                total+=productDiscount.getDiscountedAmount() * item.getQuantity();
-
-            }else {
+                total += productDiscount.getDiscountedAmount() * item.getQuantity();
+            } else {
                 billDetail.setMomentPrice(productDetail.getPrice());
-                total+=productDetail.getPrice() * item.getQuantity();
-
+                total += productDetail.getPrice() * item.getQuantity();
             }
-
-            int beforeQuantity = productDetail.getQuantity();
-            productDetail.setQuantity(beforeQuantity - item.getQuantity());
+            productDetail.setQuantity(productDetail.getQuantity() - item.getQuantity());
             productDetailRepository.save(productDetail);
             billDetailList.add(billDetail);
         }
 
         if (orderDto.getVoucherId() != null) {
-            DiscountCode discountCode = discountCodeRepository.findById(orderDto.getVoucherId()).orElseThrow(() -> new ShopApiException(HttpStatus.BAD_REQUEST, "Không tìm thấy voucher"));
+            DiscountCode discountCode = discountCodeRepository.findById(orderDto.getVoucherId())
+                    .orElseThrow(() -> new ShopApiException(HttpStatus.BAD_REQUEST, "Không tìm thấy voucher"));
             Integer currentQuaCode = discountCode.getMaximumUsage();
-            if(currentQuaCode == 0) {
+
+            if (currentQuaCode == 0) {
                 throw new ShopApiException(HttpStatus.BAD_REQUEST, "Mã giảm giá đã hết");
             }
             discountCode.setMaximumUsage(currentQuaCode - 1);
             discountCodeRepository.save(discountCode);
             bill.setDiscountCode(discountCode);
         }
-
         bill.setAmount(total);
+        double thucThu = total + orderDto.getShippingFee() - orderDto.getPromotionPrice();
+        bill.setThucThu(thucThu);
+
         bill.setBillDetail(billDetailList);
-        PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDto.getPaymentMethodId()).orElseThrow(() -> new NotFoundException("Payment not found"));
+
+        PaymentMethod paymentMethod = paymentMethodRepository.findById(orderDto.getPaymentMethodId())
+                .orElseThrow(() -> new NotFoundException("Payment not found"));
         bill.setPaymentMethod(paymentMethod);
 
         Bill billNew = billRepository.save(bill);
@@ -327,14 +343,26 @@ public class CartServiceImpl implements CartService {
         payment.setOrderId(RandomUtils.generateRandomOrderId(8));
         paymentRepository.save(payment);
 
-        return new OrderDto(billNew.getId().toString(), orderDto.getCustomer(), billNew.getInvoiceType(), billNew.getStatus(), billNew.getPaymentMethod().getId(), billNew.getBillingAddress(), billNew.getPromotionPrice(), null, null, null);
+        return new OrderDto(
+                billNew.getId().toString(),
+                orderDto.getCustomer(),
+                billNew.getInvoiceType(),
+                billNew.getStatus(),
+                billNew.getPaymentMethod().getId(),
+                billNew.getBillingAddress(),
+                billNew.getPromotionPrice(),
+                orderDto.getVoucherId(),
+                orderDto.getOrderId(),
+                orderDto.getOrderDetailDtos(),
+                billNew.getPhiShip(),
+                thucThu
+        );
     }
 
     @Override
     public void deleteCart(Long id) {
         cartRepository.deleteById(id);
     }
-
 
 //    @Autowired
 //    private CartRepository cartRepository;

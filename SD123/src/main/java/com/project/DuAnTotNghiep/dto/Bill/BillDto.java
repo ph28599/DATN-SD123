@@ -17,4 +17,7 @@ public class BillDto {
     private Boolean returnStatus;
     private CustomerDto customer;
     private Double totalAmount;
+    private Double phiShip;
+    private Double thucThu;
+
 }

@@ -19,4 +19,6 @@ public interface BillDetailProduct {
     int getSoLuong();
 
     Double getTongTien();
+
+    Double getThucThu();
 }

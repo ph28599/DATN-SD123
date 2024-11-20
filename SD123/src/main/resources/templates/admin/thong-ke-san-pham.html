@@ -106,7 +106,6 @@
                             <th scope="col">Nhãn hiệu</th>
                             <th scope="col">Loại</th>
                             <th scope="col">Số lượng bán</th>
-                            <th scope="col">Số lượng đổi trả</th>
                             <th scope="col">Doanh thu</th>
                         </tr>
                         </tr>
@@ -223,7 +222,6 @@
                         <td>${product.brand}</td>
                         <td>${product.category}</td>
                         <td>${product.totalQuantity}</td>
-                        <td>${product.totalQuantityReturn}</td>
                         <td>${price}</td>
                     </tr>`
                 })
@@ -491,7 +489,7 @@
                 XLSX.utils.book_append_sheet(workbook, worksheet, "SanPham");
 
                 const heading =[
-                    ["Mã sản phẩm", "Tên sản phẩm", "Nhãn hiệu", "Loại", "Số lượng bán", "Số lượng đổi trả", "Doanh thu"]
+                    ["Mã sản phẩm", "Tên sản phẩm", "Nhãn hiệu", "Loại", "Số lượng bán", "Doanh thu"]
                 ]
 
                 /* fix headers */
