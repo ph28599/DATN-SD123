@@ -16,6 +16,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class DiscountCodeImpl implements DiscountCodeService {
     private final DiscountCodeRepository discountCodeRepository;
@@ -33,7 +36,7 @@ public class DiscountCodeImpl implements DiscountCodeService {
 
     @Override
     public DiscountCodeDto saveDiscountCode(DiscountCodeDto discountCodeDto) {
-       if (discountCodeRepository.existsByCode(discountCodeDto.getCode())) {
+        if (discountCodeRepository.existsByCode(discountCodeDto.getCode())) {
             throw new ShopApiException(HttpStatus.BAD_REQUEST, "Mã giảm giá "+discountCodeDto.getCode()+" đã tồn tại");
         }
         DiscountCode discountCode = convertToEntity(discountCodeDto);
@@ -119,5 +122,17 @@ public class DiscountCodeImpl implements DiscountCodeService {
         discountCode.setMaximumUsage(discountCodeDto.getMaximumUsage());
         discountCode.setStatus(discountCodeDto.getStatus());
         return discountCode;
+    }
+
+    @Override
+    public int updateExpiredDiscountCodes() {
+        Date now = new Date();
+        List<DiscountCode> expiredDiscountCodes = discountCodeRepository.findAll().stream()
+                .filter(code -> code.getEndDate().before(now) && code.getStatus() != 0)
+                .toList();
+
+        expiredDiscountCodes.forEach(code -> code.setStatus(0)); // Trạng thái "Hết hạn"
+        discountCodeRepository.saveAll(expiredDiscountCodes);    // Lưu thay đổi vào database
+        return expiredDiscountCodes.size();                      // Trả về số lượng mã được cập nhật
     }
 }
