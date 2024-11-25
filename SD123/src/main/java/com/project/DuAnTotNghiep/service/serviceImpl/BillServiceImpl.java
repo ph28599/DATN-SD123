@@ -113,22 +113,29 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Bill updateStatus(String status, Long id) {
-        // Nếu hủy thì cộng lại số lượng tồn
-        if (status.equals("HUY")) {
+        Bill bill = billRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy bill có mã " + id));
+        if ("HUY".equals(status)) {
+            if (!bill.getStatus().equals(BillStatus.CHO_XAC_NHAN) && !bill.getStatus().equals(BillStatus.CHO_LAY_HANG)) {
+                throw new IllegalStateException("Không thể hủy đơn hàng. Trạng thái hiện tại: " + bill.getStatus());
+            }
             List<BillDetailProduct> billDetailProducts = billRepository.getBillDetailProduct(id);
             billDetailProducts.forEach(item -> {
-                ProductDetail productDetail = productDetailRepository.findById(item.getId()).orElseThrow(() -> new NotFoundException("Không tìm thấy thuộc tính " + item.getId()));
+                ProductDetail productDetail = productDetailRepository.findById(item.getId())
+                        .orElseThrow(() -> new NotFoundException("Không tìm thấy thuộc tính sản phẩm " + item.getId()));
                 int quantityBefore = productDetail.getQuantity();
                 productDetail.setQuantity(quantityBefore + item.getSoLuong());
                 productDetailRepository.save(productDetail);
             });
         }
 
-        Bill bill = billRepository.findById(id).orElseThrow(() -> new NotFoundException("Không tìm thấy bill có mã" + id));
+        // Cập nhật trạng thái đơn hàng
         bill.setStatus(BillStatus.valueOf(status));
         bill.setUpdateDate(LocalDateTime.now());
+
         return billRepository.save(bill);
     }
+
 
     @Override
     public BillDetailDtoInterface getBillDetail(Long maHoaDon) {
@@ -306,8 +313,8 @@ public class BillServiceImpl implements BillService {
                 "<h5> Mã hóa đơn: " + billDetailDtoInterface.getMaDinhDanh() + "</h5>\n" +
                 "<h5> Họ và tên: " + customerName + "</h5>\n" +
                 "<h5> Số điện thoại :" + customerPhone + "</h5>\n" +
-//                "<h5> Email: " + email + "</h5>\n" +
-//                "<h5> Địa chỉ:" + address + "</h5>\n" +
+                "<h5> Email: " + email + "</h5>\n" +
+                "<h5> Địa chỉ:" + address + "</h5>\n" +
                 "<h5> Ngày thanh toán: " + billDetailDtoInterface.getCreatedDate().format(formatter) + "</h5>\n" +
                 "<h3>Danh sách sản phẩm:</h3>\n" +
                 "<table border=\"1\" style=\"border-collapse: collapse;\">\n" +
@@ -345,7 +352,7 @@ public class BillServiceImpl implements BillService {
         }
         htmlContent += "</table>\n" +
                 "<h5>Tổng tiền: " + currencyFormatter.format(totalMoney) + "</h5>\n" +
-                "<h5>Tiền ship: " + currencyFormatter.format(billDetailDtoInterface.getPhiShip()) + "</h5>\n" +
+                "<h5>Tiền ship: " + currencyFormatter.format(billDetailDtoInterface.getTienKhuyenMai()) + "</h5>\n" +
                 "<h5>Tiền giảm giá: " + currencyFormatter.format(billDetailDtoInterface.getTienKhuyenMai()) + "</h5>\n" +
                 "<h4>Tổng tiền thanh toán: " + currencyFormatter.format(totalMoney - billDetailDtoInterface.getTienKhuyenMai()) + "</h4>\n" +
                 "</body>\n" +
