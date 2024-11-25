@@ -123,6 +123,7 @@
                    .on('draw.dt', () => setEvent())
 
                setEvent()
+               checkExpiration();
 
                function setEvent() {
                    $('.close-discount-btn').on('click', function () {
@@ -200,6 +201,23 @@
 
            });
 
+           function checkExpiration() {
+               const today = new Date();
+               $('#myTable tbody tr').each(function () {
+                   const endDateText = $(this).find('td:nth-child(8) span').text(); // Lấy giá trị cột "Thời gian kết thúc"
+                   const endDateParts = endDateText.split('/');
+                   const endDate = new Date(
+                       parseInt(endDateParts[2]), // Năm
+                       parseInt(endDateParts[1]) - 1, // Tháng (0-based)
+                       parseInt(endDateParts[0]) // Ngày
+                   );
+
+                   const statusCell = $(this).find('td:nth-child(9) span'); // Lấy ô "Trạng thái"
+                   if (endDate < today) {
+                       statusCell.removeClass('badge-success').addClass('badge-warning').text('Hết hạn');
+                   }
+               });
+           }
 
 
        </script>
