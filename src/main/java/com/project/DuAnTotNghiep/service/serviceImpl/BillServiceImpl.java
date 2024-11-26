@@ -114,11 +114,19 @@ public class BillServiceImpl implements BillService {
     @Override
     public Bill updateStatus(String status, Long id) {
         Bill bill = billRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Không tìm thấy bill có mã " + id));
-        if ("HUY".equals(status)) {
-            if (!bill.getStatus().equals(BillStatus.CHO_XAC_NHAN) && !bill.getStatus().equals(BillStatus.CHO_LAY_HANG)) {
-                throw new IllegalStateException("Không thể hủy đơn hàng. Trạng thái hiện tại: " + bill.getStatus());
-            }
+                .orElseThrow(() -> new NotFoundException("Không tìm thấy hóa đơn có mã " + id));
+        BillStatus currentStatus = bill.getStatus();
+
+        BillStatus targetStatus;
+        try {
+            targetStatus = BillStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Trạng thái không hợp lệ: " + status);
+        }
+        if (!isStatusTransitionValid(currentStatus, targetStatus)) {
+            throw new IllegalStateException("Không thể chuyển từ trạng thái " + currentStatus + " sang " + targetStatus);
+        }
+        if (targetStatus == BillStatus.HUY) {
             List<BillDetailProduct> billDetailProducts = billRepository.getBillDetailProduct(id);
             billDetailProducts.forEach(item -> {
                 ProductDetail productDetail = productDetailRepository.findById(item.getId())
@@ -128,12 +136,33 @@ public class BillServiceImpl implements BillService {
                 productDetailRepository.save(productDetail);
             });
         }
-
-        // Cập nhật trạng thái đơn hàng
-        bill.setStatus(BillStatus.valueOf(status));
+        bill.setStatus(targetStatus);
         bill.setUpdateDate(LocalDateTime.now());
 
         return billRepository.save(bill);
+    }
+    /**
+     * Kiểm tra tính hợp lệ của việc chuyển trạng thái.
+     *
+     * @param currentStatus Trạng thái hiện tại
+     * @param targetStatus  Trạng thái đích
+     * @return true nếu hợp lệ, false nếu không hợp lệ
+     */
+    private boolean isStatusTransitionValid(BillStatus currentStatus, BillStatus targetStatus) {
+        switch (currentStatus) {
+            case CHO_XAC_NHAN:
+                return targetStatus == BillStatus.CHO_LAY_HANG || targetStatus == BillStatus.HUY;
+            case CHO_LAY_HANG:
+                return targetStatus == BillStatus.CHO_GIAO_HANG || targetStatus == BillStatus.HUY;
+            case CHO_GIAO_HANG:
+                return targetStatus == BillStatus.HOAN_THANH;
+            case HOAN_THANH:
+                return false;
+            case HUY:
+                return false;
+            default:
+                return false;
+        }
     }
 
 
@@ -150,8 +179,6 @@ public class BillServiceImpl implements BillService {
         try {
             status1 = BillStatus.valueOf(status);
         } catch (IllegalArgumentException e) {
-            // Handle the case where the input string does not match any enum constant
-            // You can log an error, return a default value, or perform other error handling here.
         }
         return billRepository.findAllByStatusAndCustomer_Account_Id(status1, account.getId(), pageable);
     }
