@@ -381,7 +381,7 @@ public class BillServiceImpl implements BillService {
                 "<h5>Tổng tiền: " + currencyFormatter.format(totalMoney) + "</h5>\n" +
                 "<h5>Tiền ship: " + currencyFormatter.format(billDetailDtoInterface.getPhiShip()) + "</h5>\n" +
                 "<h5>Tiền giảm giá: " + currencyFormatter.format(billDetailDtoInterface.getTienKhuyenMai()) + "</h5>\n" +
-                "<h4>Tổng tiền thanh toán: " + currencyFormatter.format(totalMoney - billDetailDtoInterface.getTienKhuyenMai()) + "</h4>\n" +
+                "<h4>Tổng tiền thanh toán: " + currencyFormatter.format(totalMoney - billDetailDtoInterface.getTienKhuyenMai() + billDetailDtoInterface.getPhiShip()) + "</h4>\n" +
                 "</body>\n" +
                 "</html>";
         return htmlContent;
