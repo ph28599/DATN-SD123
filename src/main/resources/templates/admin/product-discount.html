@@ -200,7 +200,6 @@
 
 
             });
-
             function checkExpiration() {
                 const today = new Date();
                 $('#myTable tbody tr').each(function () {
@@ -212,12 +211,29 @@
                         parseInt(endDateParts[0]) // Ngày
                     );
 
-                    const statusCell = $(this).find('td:nth-child(9) span'); // Lấy ô "Trạng thái"
-                    if (endDate < today) {
+                    const statusCell = $(this).find('td:nth-child(9) span'); // Lấy ô trạng thái
+                    const discountId = $(this).find('.close-discount-btn').attr('data-close-id'); // Lấy ID giảm giá
+
+                    if (endDate < today && statusCell.text() !== 'Hết hạn') {
+                        // Cập nhật trạng thái trên giao diện
                         statusCell.removeClass('badge-success').addClass('badge-warning').text('Hết hạn');
+
+                        // Gửi yêu cầu AJAX để cập nhật trạng thái trong cơ sở dữ liệu
+                        $.ajax({
+                            type: 'POST',
+                            url: `/api/private/product-discount/${discountId}/status/true`,
+                            dataType: 'json',
+                            success: function () {
+                                console.log(`Giảm giá ${discountId} đã được cập nhật thành trạng thái "Đóng".`);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(`Không thể cập nhật giảm giá ${discountId}:`, xhr.responseJSON.message);
+                            }
+                        });
                     }
                 });
             }
+
 
 
         </script>

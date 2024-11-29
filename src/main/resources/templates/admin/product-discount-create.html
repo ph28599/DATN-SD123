@@ -163,7 +163,7 @@
                 </form>
 
                 <div class="grid grid-cols-3 gap-2 mt-6">
-                        <div id="all-product" class="border border-gray-200">
+                    <div id="all-product" class="border border-gray-200">
                         <div class="bg-zinc-50 border border-gray-200">
                             <div class="flex justify-between">
                                 <span class="font-bold py-2 px-2">Danh sách sản phẩm</span>
@@ -265,11 +265,30 @@
             $('#overlay').hide()
         })
 
-        $('#apply-all-form').on('submit', function () {
-            if($("#start-date-all").val() >= $('#end-date-all').val()) {
-                Swal.fire({text: 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc', icon: 'error'})
+        $('#apply-all-form').on('submit', function (e) {
+            const startDate = new Date($("#start-date-all").val());
+            const endDate = new Date($("#end-date-all").val());
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (startDate >= endDate) {
+                e.preventDefault();
+                Swal.fire({
+                    text: 'Ngày bắt đầu phải nhỏ hơn ngày kết thúc',
+                    icon: 'error'
+                });
+                return;
             }
-        })
+
+            if (endDate <= today) {
+                e.preventDefault();
+                Swal.fire({
+                    text: 'Ngày kết thúc phải lớn hơn ngày hiện tại',
+                    icon: 'error'
+                });
+                return;
+            }
+        });
 
 
         $(".category-item").on('click', function () {
@@ -293,7 +312,7 @@
         }
 
 
-         $.ajax({
+        $.ajax({
             method: 'GET',
             type: 'json',
             url: `/api/products-no-pagination/`,
@@ -591,10 +610,12 @@
                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Giảm
                                             giá</label>
                                         <div class="flex items-center">
-                                            <input type="text" class="percentage w-12 py-1 text-sm border-b-2 border-gray-400 outline-none  focus:border-gray-400 border-t-0 border-r-0 border-l-0" min="1" max="100">
-                                            <span class="text-sm">%&nbsp;</span>
-                                            <span class="text-sm">&nbsp; hoặc &nbsp;</span>
-                                            <input type="text" name="amount" placeholder="Giá sau"
+                                          <label for="percentage" class="text-sm">Phần trăm giảm</label>
+                                            <input type="text" class="percentage w-12 py-1 text-sm border-b-2 border-gray-400 outline-none focus:border-gray-400 border-t-0 border-r-0 border-l-0" min="1" max="100">
+                                            <span class="text-sm">%</span>
+
+                                            <span class="text-sm">&nbsp; Giá sau khi giảm &nbsp;</span>
+                                            <input type="text" name="amount" placeholder=""
                                                    class="amount w-20 py-1 border-b-2 border-gray-400 outline-none text-sm  focus:border-gray-400 border-t-0 border-r-0 border-l-0"
                                             >
                                             <span class="text-sm">đ</span>
@@ -735,12 +756,31 @@
             });
         }
         handleInputPrice();
+
         function handleDateChange() {
             $('.startDate').on('change', function () {
-                var parent = $(this).closest('.product-select-item');
-                const endDate = parent.find(".endDate")
-                if(endDate.val() != "" && endDate.val() != null) {
-                    if($(this).val() >= endDate.val()) {
+                const parent = $(this).closest('.product-select-item');
+                const endDate = parent.find(".endDate");
+
+                const today = new Date();
+                today.setDate(today.getDate() - 1);
+                const selectedStartDate = new Date($(this).val());
+                if (selectedStartDate < today) {
+                    Toastify({
+                        text: "Ngày bắt đầu phải lớn hơn ngày hiện tại",
+                        className: "error",
+                        style: {
+                            background: "red",
+                            color: "white"
+                        }
+                    }).showToast();
+                    $(this).val("");
+                    return;
+                }
+
+                if (endDate.val() != "" && endDate.val() != null) {
+                    const selectedEndDate = new Date(endDate.val());
+                    if (selectedStartDate >= selectedEndDate) {
                         Toastify({
                             text: "Ngày bắt đầu phải nhỏ hơn ngày kết thúc",
                             className: "error",
@@ -749,17 +789,20 @@
                                 color: "white"
                             }
                         }).showToast();
-                        $(this).val("")
+                        $(this).val("");
                     }
                 }
-
-            })
+            });
 
             $('.endDate').on('change', function () {
-                var parent = $(this).closest('.product-select-item');
-                const startDate = parent.find(".startDate")
-                if(startDate.val() != "" && startDate.val() != null) {
-                    if($(this).val() <= startDate.val()) {
+                const parent = $(this).closest('.product-select-item');
+                const startDate = parent.find(".startDate");
+
+                if (startDate.val() != "" && startDate.val() != null) {
+                    const selectedStartDate = new Date(startDate.val());
+                    const selectedEndDate = new Date($(this).val());
+
+                    if (selectedEndDate <= selectedStartDate) {
                         Toastify({
                             text: "Ngày kết thúc phải lớn hơn ngày bắt đầu",
                             className: "error",
@@ -768,15 +811,14 @@
                                 color: "white"
                             }
                         }).showToast();
-                        $(this).val("")
+                        $(this).val("");
                     }
                 }
-
-            })
+            });
         }
 
         handleSubmit()
-    //     ============================================ HANDLE SUBMIT ==========================
+        //     ============================================ HANDLE SUBMIT ==========================
         function handleSubmit() {
             $('#save-discount-btn').on('click', async function () {
                 var productDiscounts = []
