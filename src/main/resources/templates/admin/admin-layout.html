@@ -30,8 +30,9 @@
                     aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand text-white" style="background-color: #272c33" href="./"><img th:src="@{images/logo-3.png}" alt="Logo"></a>
-            <a class="navbar-brand hidden" href="./"><img th:src="@{images/logo-3.png}" alt="Logo"></a>
+            <a class="navbar-brand text-white" style="background-color: #272c33" href="./"><img th:src="@{/images/logo-3.png}" alt="Logo"></a>
+            <a class="navbar-brand hidden" href="./"><img th:src="@{/images/logo-3.png}" alt="Logo">
+            </a>
         </div>
 
         <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -60,8 +61,8 @@
                        aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Quản lý hóa đơn</a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="fas fa-file-invoice"></i><a th:href="@{/admin/bill-list}">Hóa đơn</a></li>
-<!--                        <li sec:authorize="hasRole('ADMIN')"><i class="fas fa-exchange-alt"></i><a th:href="@{/admin-only/bill-return}">Đổi trả</a></li>-->
-<!--                        <li><i class="fas fa-undo"></i><a th:href="@{/admin-only/need-refund-mng}">Hoàn tiền thanh toán Online</a></li>-->
+                        <!--                        <li sec:authorize="hasRole('ADMIN')"><i class="fas fa-exchange-alt"></i><a th:href="@{/admin-only/bill-return}">Đổi trả</a></li>-->
+                        <!--                        <li><i class="fas fa-undo"></i><a th:href="@{/admin-only/need-refund-mng}">Hoàn tiền thanh toán Online</a></li>-->
                     </ul>
                 </li>
                 <li class="menu-item-has-children dropdown" sec:authorize="hasRole('ADMIN')">
@@ -114,8 +115,8 @@
                 </a>
 
                 <div class="user-menu">
-<!--                    <a class="nav-link" th:href="@{/profile}"><i class="fa fa-user"></i> Cập nhật thông tin</a>-->
-<!--                    <a class="nav-link" th:href="@{/}"><i class="fa fa-user"></i> Trang khách</a>-->
+                    <!--                    <a class="nav-link" th:href="@{/profile}"><i class="fa fa-user"></i> Cập nhật thông tin</a>-->
+                    <!--                    <a class="nav-link" th:href="@{/}"><i class="fa fa-user"></i> Trang khách</a>-->
                     <a class="nav-link" th:href="@{/user_logout}"><i class="fa fa-power-off"></i> Đăng xuất</a>
                 </div>
             </div>
