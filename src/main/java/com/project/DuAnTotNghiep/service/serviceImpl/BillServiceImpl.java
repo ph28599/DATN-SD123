@@ -334,13 +334,13 @@ public class BillServiceImpl implements BillService {
                 "    <title>Hóa đơn bán hàng</title>\n" +
                 "</head>\n" +
                 "<body style=\"font-family: SVN-Times New Roman;\">\n" +
-                "<h1 style=\"text-align: center\">HÓA ĐƠN BÁN HÀNG</h1>\n" +
+                "<h1 style=\"text-align: center\">MS-SHIRT</h1>\n" +
                 "<h3 style=\"text-align: center\"> Tòa nhà FPT Polytechnic, Cổng số 2, 13 P. Trịnh Văn Bô</h3>\n" +
                 "<h3 style=\"text-align: center\">Xuân Phương, Nam Từ Liêm, Hà Nội</h3>\n\n" +
                 "<h5> Mã hóa đơn: " + billDetailDtoInterface.getMaDinhDanh() + "</h5>\n" +
                 "<h5> Họ và tên: " + customerName + "</h5>\n" +
                 "<h5> Số điện thoại :" + customerPhone + "</h5>\n" +
-                "<h5> Email: " + email + "</h5>\n" +
+//                "<h5> Email: " + email + "</h5>\n" +
                 "<h5> Địa chỉ:" + address + "</h5>\n" +
                 "<h5> Ngày thanh toán: " + billDetailDtoInterface.getCreatedDate().format(formatter) + "</h5>\n" +
                 "<h3>Danh sách sản phẩm:</h3>\n" +
