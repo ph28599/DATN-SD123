@@ -48,9 +48,9 @@
                 <div class="tab-item" data-status="HOAN_THANH">
                     Hoàn thành
                 </div>
-<!--                <div class="tab-item" data-status="TRA_HANG">-->
-<!--                    Đổi trả-->
-<!--                </div>-->
+                <!--                <div class="tab-item" data-status="TRA_HANG">-->
+                <!--                    Đổi trả-->
+                <!--                </div>-->
                 <div class="tab-item" data-status="HUY">
                     Đã hủy
                 </div>
@@ -89,6 +89,7 @@
                                         <span class="mr-2" th:text="'Màu: ' + ${billDetail.productDetail.color.name}"></span>
                                         <span class="mr-2" th:text="'Size: ' + ${billDetail.productDetail.size.name}"></span>
                                         <span class="mr-2" th:text="'SL: ' + ${billDetail.quantity}"></span>
+                                        <span class="mr-2 text-success font-weight-bold" th:text="'Đơn giá: ' + ${#numbers.formatDecimal(billDetail.momentPrice, 0, 'POINT', 0, 'COMMA')} + ' VND'"></span>
                                     </div>
                                     <hr>
                                 </div>
