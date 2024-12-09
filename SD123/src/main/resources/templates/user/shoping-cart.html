@@ -217,50 +217,51 @@
                                 <div id="address-select-group" style="display: none">
                                     <div class="rs1-select2 rs2-select2 bor8 bg0 mb-12 mt-9">
                                         <label for="tinhThanhPho" class="input-label">Tỉnh/Thành phố</label>
-                                        <select class="js-select2-custom custom-select" name="tinhThanhPho"
-                                                id="tinhThanhPho" size="1">
+                                        <select class="js-select2-custom custom-select" name="tinhThanhPho" id="tinhThanhPho" size="1">
                                             <option value="" selected>Tỉnh/Thành phố</option>
                                             <!-- Add options here -->
                                         </select>
                                         <div class="dropDownSelect2"></div>
                                     </div>
+
                                     <div class="rs1-select2 rs2-select2 bor8 bg0 mb-12 mt-9">
                                         <label for="quanHuyen" class="input-label">Quận/Huyện</label>
-                                        <select class="js-select2-custom custom-select" name="quanHuyen" id="quanHuyen"
-                                                size="1">
+                                        <select class="js-select2-custom custom-select" name="quanHuyen" id="quanHuyen" size="1">
                                             <option value="" selected>Quận/Huyện</option>
                                             <!-- Add options here -->
                                         </select>
                                         <div class="dropDownSelect2"></div>
                                     </div>
+
                                     <div class="rs1-select2 rs2-select2 bor8 bg0 mb-12 mt-9">
                                         <label for="phuongXa" class="input-label">Phường/Xã</label>
-                                        <select class="js-select2-custom custom-select" name="phuongXa" id="phuongXa"
-                                                size="1">
+                                        <select class="js-select2-custom custom-select" name="phuongXa" id="phuongXa" size="1">
                                             <option value="" selected>Phường/Xã</option>
                                             <!-- Add options here -->
                                         </select>
                                         <div class="dropDownSelect2"></div>
                                     </div>
+
                                     <div class="bor8 bg0 mb-12">
                                         <label for="houseDeliveryAddressLabel" class="input-label">Số nhà</label>
-                                        <input type="text" class="form-control" name="emailDeliveryAddress"
-                                               id="houseDeliveryAddressLabel"
-                                               placeholder="44 hoặc tên địa điểm gần nhà bạn"
-                                               aria-label="44 hoặc tên địa điểm gần nhà bạn">
+                                        <input type="text" class="form-control" name="emailDeliveryAddress" id="houseDeliveryAddressLabel"
+                                               placeholder="44 hoặc tên địa điểm gần nhà bạn" aria-label="44 hoặc tên địa điểm gần nhà bạn">
                                     </div>
                                     <span class="stext-111 errorStreet" style="color: red; display: none">Vui lòng nhập số nhà, đường, xóm</span>
+
+                                    <div class="bor8 bg0 mb-12">
+                                        <label for="phone" class="input-label">Số điện thoại</label>
+                                        <input type="text" class="form-control" name="phone" id="phone" placeholder="Số điện thoại" aria-label="Số điện thoại">
+                                    </div>
+
+                                    <span class="stext-111 errorPhone" style="color: red; display: none">Vui lòng nhập số điện thoại hợp lệ</span>
+
                                     <div>
-                                        <button class="bg2 size-102 hov-btn3" type="button" id="save-address-btn">Lưu
-                                        </button>
-                                        <button class="bor8 size-102" type="button" id="cancel-add-address">Bỏ qua
-                                        </button>
+                                        <button class="bg2 size-102 hov-btn3" type="button" id="save-address-btn">Lưu</button>
+                                        <button class="bor8 size-102" type="button" id="cancel-add-address">Bỏ qua</button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex-w flex-t bor12 p-t-15 p-b-30">
+                                <div class="flex-w flex-t bor12 p-t-15 p-b-30">
                         <div class="size-208 w-full-ssm">
                             <span class="stext-110 cl2">Phí ship:</span>
                         </div>
@@ -305,12 +306,12 @@
                             <div class="form-group">
                                 <input type="radio" class="custom-radio" value="3" name="paymentMethod"
                                        id="payment-online" checked>
-                                <label for="payment-online">Thanh toán VNPAY</label>
+                                <label for="payment-online">Chuyển khoản</label>
                             </div>
                             <div class="form-group">
                                 <input type="radio" class="custom-radio" value="1" name="paymentMethod"
                                        id="payment-offline">
-                                <label for="payment-offline">Thanh toán khi nhận hàng</label>
+                                <label for="payment-offline">Tiền mặt</label>
                             </div>
                         </div>
                     </div>
@@ -468,67 +469,78 @@
                 const wardCode = $("#phuongXa").val();
                 const houseDeliveryAddress = $("#houseDeliveryAddressLabel").val().trim();
                 const provinceId = $("#tinhThanhPho").val();
+                const phone = $("#phone").val().trim();
 
-                if (provinceId === "" || districtId === "" || wardCode === "" || houseDeliveryAddress === "") {
-                    swal("Lỗi", "Vui lòng nhập đầy đủ địa chỉ", "error");
-                } else {
-                    const addressSelected = {
-                        houseDeliveryAddress: houseDeliveryAddress,
-                        tinhThanhPho: $("#tinhThanhPho option:selected").text(),
-                        quanHuyen: $("#quanHuyen option:selected").text(),
-                        phuongXa: $("#phuongXa option:selected").text()
+                if (provinceId === "" || districtId === "" || wardCode === "" || houseDeliveryAddress === "" || phone === "") {
+                    swal("Lỗi", "Vui lòng nhập đầy đủ địa chỉ và số điện thoại", "error");
+                    return;
+                }
+                if (!/^\d{10,12}$/.test(phone)) {
+                    swal("Lỗi", "Số điện thoại phải từ 10 đến 12 chữ số", "error");
+                    return;
+                }
+                const addressSelected = {
+                    houseDeliveryAddress: houseDeliveryAddress,
+                    tinhThanhPho: $("#tinhThanhPho option:selected").text(),
+                    quanHuyen: $("#quanHuyen option:selected").text(),
+                    phuongXa: $("#phuongXa option:selected").text(),
+                    phone: phone
+                };
+
+                updateShippingFee(function (fee) {
+                    const dataSend = {
+                        address: `${addressSelected.phone} - ${addressSelected.houseDeliveryAddress}, ${addressSelected.phuongXa}, ${addressSelected.quanHuyen}, ${addressSelected.tinhThanhPho}`,
+                        shippingFee: fee,
+                        provinceId: provinceId,
+                        districtId: districtId,
+                        wardId: wardCode,
+                        phone: addressSelected.phone
                     };
 
-                    updateShippingFee(function (fee) {
-                        const dataSend = {
-                            address: `${addressSelected.houseDeliveryAddress}, ${addressSelected.phuongXa}, ${addressSelected.quanHuyen}, ${addressSelected.tinhThanhPho}`,
-                            shippingFee: fee,
-                            provinceId: provinceId,
-                            districtId: districtId,
-                            wardId: wardCode
-                        };
+                    // Log dữ liệu trước khi gửi đi
+                    console.log("Dữ liệu gửi đi:", dataSend);
 
-                        $.ajax({
-                            type: 'POST',
-                            contentType: "application/json; charset=utf-8",
-                            url: 'api/public/addressShipping',
-                            data: JSON.stringify(dataSend),
-                            success: function (data) {
-                                if (data && data.id) {
-                                    const fullAddress = `${addressSelected.houseDeliveryAddress}, ${addressSelected.phuongXa}, ${addressSelected.quanHuyen}, ${addressSelected.tinhThanhPho}`;
-                                    const newAddressHTML = `
-                            <div class="shipping-choose" data-shipping-fee="${fee}" data-province-id="${provinceId}" data-district-id="${districtId}" data-ward-id="${wardCode}">
-                                <div id="shipping${data.id}">
-                                    <p>${fullAddress}</p>
-                                </div>
-                            </div>`;
+                    $.ajax({
+                        type: 'POST',
+                        contentType: "application/json; charset=utf-8",
+                        url: 'api/public/addressShipping',
+                        data: JSON.stringify(dataSend),
+                        success: function (data) {
+                            if (data && data.id) {
+                                const fullAddress = `${addressSelected.phone} - ${addressSelected.houseDeliveryAddress}, ${addressSelected.phuongXa}, ${addressSelected.quanHuyen}, ${addressSelected.tinhThanhPho}`;
+                                const newAddressHTML = `
+                        <div class="shipping-choose" data-shipping-fee="${fee}" data-province-id="${provinceId}" data-district-id="${districtId}" data-ward-id="${wardCode}">
+                            <div id="shipping${data.id}">
+                                <p>${fullAddress}</p>
+                            </div>
+                        </div>`;
 
-                                    $('.addressArea > .pt-15').append(newAddressHTML);
+                                $('.addressArea > .pt-15').append(newAddressHTML);
 
-                                    updateAddressDisplay();
+                                updateAddressDisplay();
 
-                                    $(".shipping-choose").removeClass('active');
-                                    $(`#shipping${data.id}`).closest('.shipping-choose').addClass('active');
+                                $(".shipping-choose").removeClass('active');
+                                $(`#shipping${data.id}`).closest('.shipping-choose').addClass('active');
 
+                                $('#fee').text(formatNumber(fee));
+                                calculateTotal();
 
-                                    $('#fee').text(formatNumber(fee));
-                                    calculateTotal();
-
-                                    $("#add-address").show();
-                                    $("#address-select-group").hide();
-                                    resetAddressForm();
-                                } else {
-                                    swal("Lỗi", "Không thể lấy dữ liệu địa chỉ từ server.", "error");
-                                }
-                            },
-                            error: function (xhr, status, error) {
-                                $('#loading-overlay').hide();
-                                swal("Lỗi", xhr.responseJSON.message, "error");
+                                $("#add-address").show();
+                                $("#address-select-group").hide();
+                                resetAddressForm();
+                            } else {
+                                swal("Lỗi", "Không thể lấy dữ liệu địa chỉ từ server.", "error");
                             }
-                        });
+                        },
+                        error: function (xhr, status, error) {
+                            $('#loading-overlay').hide();
+                            swal("Lỗi", xhr.responseJSON.message, "error");
+                        }
                     });
-                }
+                });
             });
+
+
 
             $("#cancel-add-address").on('click', function () {
                 $("#add-address").show();
@@ -964,13 +976,12 @@
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
                             $('#loading-overlay').hide();
-                            Swal.fire({
+                           Swal.fire({
                                 title: 'Đặt hàng',
                                 text: 'Đặt hàng thành công',
                                 icon: 'success',
                                 showCancelButton: true,
                                 confirmButtonText: 'Tiếp tục mua sắm',
-                                cancelButtonText: 'Hủy'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     orderDetails.forEach(detail => {
