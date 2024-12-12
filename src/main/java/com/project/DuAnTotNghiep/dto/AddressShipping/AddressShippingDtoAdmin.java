@@ -14,4 +14,5 @@ public class AddressShippingDtoAdmin {
     private int provinceId;
     private int districtId;
     private int wardId;
+    private String soDienThoaiNhan;
 }

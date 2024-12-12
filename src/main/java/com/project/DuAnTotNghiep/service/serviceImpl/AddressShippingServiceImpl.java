@@ -49,35 +49,45 @@ public class AddressShippingServiceImpl implements AddressShippingService {
     @Override
     public AddressShippingDto saveAddressShippingUser(AddressShippingDto addressShippingDto) {
         List<AddressShipping> addressShippings = addressShippingRepository.findAllByCustomer_Account_Id(getCurrentLogin().getId());
-        if (addressShippings.size() > 5) {
+        if (addressShippings.size() >= 5) {
             throw new ShopApiException(HttpStatus.BAD_REQUEST, "Bạn chỉ được thêm tối đa 5 địa chỉ");
         }
-
         AddressShipping addressShipping = new AddressShipping();
         addressShipping.setAddress(addressShippingDto.getAddress());
-        addressShipping.setProvinceId(addressShippingDto.getProvinceId()); // Set provinceId
-        addressShipping.setDistrictId(addressShippingDto.getDistrictId()); // Set districtId
-        addressShipping.setWardId(addressShippingDto.getWardId()); // Set wardId
+        addressShipping.setProvinceId(addressShippingDto.getProvinceId());
+        addressShipping.setDistrictId(addressShippingDto.getDistrictId());
+        addressShipping.setWardId(addressShippingDto.getWardId());
+        addressShipping.setSoDienThoaiNhan(addressShippingDto.getSoDienThoaiNhan());
 
-        Customer customer = new Customer();
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            customer = getCurrentLogin().getCustomer();
-            addressShipping.setCustomer(customer);
-        }
-
+        Customer customer = getCurrentLogin().getCustomer();
+        addressShipping.setCustomer(customer);
         AddressShipping addressShippingNew = addressShippingRepository.save(addressShipping);
-        return new AddressShippingDto(addressShippingNew.getId(), addressShippingNew.getAddress(), addressShippingNew.getProvinceId(), addressShippingNew.getDistrictId(), addressShippingNew.getWardId());
+        return new AddressShippingDto(
+                addressShippingNew.getId(),
+                addressShippingNew.getAddress(),
+                addressShippingNew.getProvinceId(),
+                addressShippingNew.getDistrictId(),
+                addressShippingNew.getWardId(),
+                addressShippingNew.getSoDienThoaiNhan()
+        );
     }
 
     @Override
     public AddressShippingDto saveAddressShippingAdmin(AddressShippingDtoAdmin addressShippingDto) {
         AddressShipping addressShipping = new AddressShipping();
-        addressShipping.setAddress(addressShipping.getAddress());
-        Customer customer = customerRepository.findById(addressShippingDto.getCustomerId()).orElseThrow(() -> new NotFoundException("Customer not found"));
+        addressShipping.setAddress(addressShippingDto.getAddress());
+        Customer customer = customerRepository.findById(addressShippingDto.getCustomerId())
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
         addressShipping.setCustomer(customer);
-
         AddressShipping addressShippingNew = addressShippingRepository.save(addressShipping);
-        return new AddressShippingDto(addressShippingNew.getId(), addressShippingNew.getAddress(), addressShippingNew.getProvinceId(), addressShippingNew.getDistrictId(), addressShippingNew.getWardId());
+        return new AddressShippingDto(
+                addressShippingNew.getId(),
+                addressShippingNew.getAddress(),
+                addressShippingNew.getProvinceId(),
+                addressShippingNew.getDistrictId(),
+                addressShippingNew.getWardId(),
+                addressShippingNew.getSoDienThoaiNhan()
+        );
     }
 
     @Override

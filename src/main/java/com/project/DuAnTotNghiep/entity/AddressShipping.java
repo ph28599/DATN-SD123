@@ -29,12 +29,14 @@ public class AddressShipping {
     @Column(name = "ward_id", nullable = false)
     private int wardId;
 
-
     @Nationalized
     @Column(nullable = false, length = 150)
     private String address;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    Customer customer;
+    private Customer customer;
+
+    @Column(name = "so_dien_thoai_nhan", length = 15, nullable = false)
+    private String soDienThoaiNhan;
 }
