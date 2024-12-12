@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------
-Project:  
-Version:  
-Last change:  
-Assigned to:  Le Xuan Bach
+Project:
+Version:
+Last change:
+Assigned to:  Do Hoanh Sang
 Primary use:  Company
 -------------------------------------------------------------------*/
 /*------------------------------------------------------------------
@@ -19,10 +19,10 @@ Primary use:  Company
 /*------------------------------------------------------------------
 [COLOR CODES]
 
-# Text Color      :  
-# Primary Color 01:  
-# Primary Color 02:   
-# Primary Color 03:  
+# Text Color      :
+# Primary Color 01:
+# Primary Color 02:
+# Primary Color 03:
 
 ------------------------------------------------------------------*/
 /*------------------------------------------------------------------
@@ -54,7 +54,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 @font-face {
   font-family: 'Poppins', sans-serif;
-  src: url('../fonts/Poppins/'Poppins', sans-serif.ttf'); 
+  src: url('../fonts/Poppins/'Poppins', sans-serif.ttf');
 }
 
 @font-face {
@@ -829,7 +829,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
-  -moz-transition: all 0.34;  
+  -moz-transition: all 0.34;
   transition: all 0.4s;
 
   box-shadow: 0 3px 6px 0px rgba(0, 0, 0, 0.18);
@@ -886,7 +886,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
-  -moz-transition: all 0.34;  
+  -moz-transition: all 0.34;
   transition: all 0.4s;
 }
 
