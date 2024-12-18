@@ -1681,6 +1681,45 @@
                                         icon: "error"
                                     });
                                 });
+
+                            var activeTab = $('.tab-container .tab.active');  // Tab đang được chọn
+                            var tabNumber = parseInt(activeTab.attr('data-tab-number'));  // Lấy số thứ tự của tab hiện tại
+
+                            // Xóa tab và nội dung tương ứng với hóa đơn vừa thanh toán
+                            $(`.tab[data-tab-number='${tabNumber}']`).remove();
+                            $(`.product-select-body[data-tab-number='${tabNumber}']`).remove();
+
+                            // Chuyển sang tab trước đó (nếu có)
+                            var remainingTabs = $('.tab').length;
+
+                            if (remainingTabs > 0) {
+                                var previousTabNumber = tabNumber - 1;
+                                if (previousTabNumber > 0) {
+                                    $(`.tab[data-tab-number='${previousTabNumber}']`).addClass('active');
+                                    $(`.product-select-body[data-tab-number='${previousTabNumber}']`).addClass('active').removeClass('hidden');
+                                }
+                            }
+                            if (remainingTabs === 0) {
+                                // Tạo tab mới
+                                var newTab = $(`<div data-tab-number="1" class="tab font-bold relative cursor-pointer rounded-lg p-2">
+                                    Hóa đơn <span>1</span>
+                                    <div class="remove-tab-btn absolute top-0.5 right-0 cursor-pointer">
+                                        <svg class="" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                            viewBox="0 0 32 32">
+                                            <path fill="currentColor"
+                                                d="M16 2C8.2 2 2 8.2 2 16s6.2 14 14 14s14-6.2 14-14S23.8 2 16 2zm5.4 21L16 17.6L10.6 23L9 21.4l5.4-5.4L9 10.6L10.6 9l5.4 5.4L21.4 9l1.6 1.6l-5.4 5.4l5.4 5.4l-1.6 1.6z"/>
+                                        </svg>
+                                    </div>
+                                </div>`);
+                                $('.tab-list').append(newTab);
+                                var body = $(`<tbody data-tab-number="1" class="product-select-body active"></tbody>`);
+                                $('table').append(body);
+
+                                newTab.addClass('active');
+                                body.removeClass('hidden').addClass('active');
+                                selectedCustomer.removeClass('hidden').addClass('active');
+                            }
+
                         },
                         error: function (xhr, status, error) {
                             $('#loading-overlay').hide();
@@ -1692,16 +1731,15 @@
                         }
                     });
                 }
+
                 // Hàm reset voucher và thông tin khách hàng
                 function resetVoucherAndCustomerInfo() {
-                    // Reset voucher
-                    $('.selected-voucher.active').html('');  // Xóa hiển thị voucher đã chọn
-                    $('.selected-voucher.active').attr('selected-id', '');  // Xóa ID voucher đã chọn
-                    voucherChoosed = null;  // Đặt lại voucher về null
-                    $('#voucher-discount').text('0');  // Đặt lại phần giảm giá về 0
-
-                    // Reset thông tin khách hàng
-                    $('#selected-customer').val('');  // Xóa tên khách hàng
+                    $('.selected-voucher.active').html('');
+                    $('.selected-voucher.active').attr('selected-id', '');
+                    voucherChoosed = null;
+                    $('#voucher-discount').text('0');
+                    $('#selected-customer').val('');
+                    $("#payment-offline").prop("checked", true);
 
 
                     // Reset lại số tiền cần thanh toán

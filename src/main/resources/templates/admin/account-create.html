@@ -15,7 +15,7 @@
     <div th:if="${errorMessage}" class="alert alert-danger">
         <p th:text="${errorMessage}"></p>
     </div>
-    <form class="mt-5 px-4 pt-4 pb-6 shadow-sm border" th:object="${Account}" method="post" th:action="${action}" >
+    <form id="login-form" class="mt-5 px-4 pt-4 pb-6 shadow-sm border" th:object="${Account}" method="post" th:action="${action}" >
         <div class="form-group">
             <label for="name">Họ tên nhân viên:</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Họ và tên">

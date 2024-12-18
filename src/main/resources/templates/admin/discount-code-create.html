@@ -169,6 +169,7 @@
                 $("#discountAmount").prop('disabled', false);
                 $('#percentage').prop('disabled', true);
                 $('#maximumAmount').prop('disabled', true);
+
             });
 
             function validateEndDate() {
@@ -256,6 +257,54 @@
                     e.preventDefault();
                 }
             }
+            $('#discountAmount, #minimumAmountInCart, #maximumAmount').on('input', function () {
+                var discountAmount = parseInt($('#discountAmount').val()) || 0;
+                var minimumAmountInCart = parseInt($('#minimumAmountInCart').val()) || 0;
+                var maximumAmount = parseInt($('#maximumAmount').val()) || 0;
+
+                if (maximumAmount >= minimumAmountInCart && minimumAmountInCart > 0) {
+                    Toastify({
+                        text: "Số tiền giảm tối đa phải nhỏ hơn số tiền áp dụng cho đơn tối thiểu!",
+                        className: "error",
+                        style: {
+                            color: "white",
+                            background: "red",
+                        }
+                    }).showToast();
+                    $('#maximumAmount').val('');
+                }
+            });
+
+            function validateDiscountAmount() {
+                const discountAmount = parseInt($('#discountAmount').val());
+                const minimumAmount = parseInt($('#minimumAmountInCart').val());
+
+                if (discountAmount > minimumAmount) {
+                    Toastify({
+                        text: "Số tiền giảm không được lớn hơn số tiền áp dụng cho đơn tối thiểu!",
+                        className: "error",
+                        style: {
+                            color: "white",
+                            background: "red",
+                        }
+                    }).showToast();
+                    $('#discountAmount').val(''); // Xóa giá trị nếu không hợp lệ
+                }
+            }
+
+            // Kiểm tra mỗi khi người dùng nhập số tiền giảm hoặc số tiền áp dụng cho đơn tối thiểu
+            $('#discountAmount').on('input', function () {
+                if (type == 2) { // Kiểm tra khi chọn giảm theo tiền
+                    validateDiscountAmount();
+                }
+            });
+
+            $('#minimumAmountInCart').on('input', function () {
+                if (type == 2) { // Kiểm tra khi chọn giảm theo tiền
+                    validateDiscountAmount();
+                }
+            });
+
             numericFields.forEach(function (selector) {
                 $(selector).on('keypress', function (e) {
                     onlyAllowNumberInput(e);

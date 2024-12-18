@@ -78,24 +78,32 @@
                         <td class="text-center" th:text="${bill.code}"></td>
                         <td class="text-center" th:text="${#temporals.format(bill.createDate, 'dd/MM/yyyy HH:mm')}"></td>
                         <td class="text-center" th:text="${#numbers.formatDecimal(bill.amount, 0, 'POINT', 0, 'COMMA') + ' VND'}"> VND</td>
-                        <td class="text-center" th:text="${bill.paymentMethod.name}"></td>
-                        <td class="text-center" th:text="${bill.status}"></td>
+                        <td class="text-center" th:text="#{payment.method.__${bill.paymentMethod.name}__}"></td>
+                        <td class="text-center" th:text="#{bill.status.__${bill.status}__}"></td>
                         <td class="">
-                            <span class="text-primary font-weight-bold js-show-detail cursor-pointer">Hiển thị thông tin sản phẩm</span>
+                            <span class="text-primary font-weight-bold js-show-detail cursor-pointer">Hiển thị thông tin chi tiết</span>
                             <div class="modal-cart-detail p-4">
-                                <div th:each="billDetail : *{bill.billDetail}">
-                                    <a th:href="'/product-detail/' + ${billDetail.productDetail.product.code}" th:text="${billDetail.productDetail.product.name}"></a>
-                                    <div>
-                                        <span class="mr-2" th:text="'Màu: ' + ${billDetail.productDetail.color.name}"></span>
-                                        <span class="mr-2" th:text="'Size: ' + ${billDetail.productDetail.size.name}"></span>
-                                        <span class="mr-2" th:text="'SL: ' + ${billDetail.quantity}"></span>
-                                        <span class="mr-2 text-success font-weight-bold" th:text="'Đơn giá: ' + ${#numbers.formatDecimal(billDetail.momentPrice, 0, 'POINT', 0, 'COMMA')} + ' VND'"></span>
+                                <div th:if="${bill != null}">
+                                    <div class="order-details">
+                                        <div th:each="billDetail : *{bill.billDetail}">
+                                            <a th:href="'/product-detail/' + ${billDetail.productDetail.product.code}" th:text="${billDetail.productDetail.product.name}"></a> </br>
+                                            <span th:text="'Màu: ' + ${billDetail.productDetail.color.name}" class="mr-2"></span>
+                                            <span th:text="'Size: ' + ${billDetail.productDetail.size.name}" class="mr-2"></span>
+                                            <span th:text="'SL: ' + ${billDetail.quantity}" class="mr-2"></span>
+                                            <span th:text="'Đơn giá: ' + ${#numbers.formatDecimal(billDetail.momentPrice, 0, 'POINT', 0, 'COMMA')} + ' VND'"
+                                                  class="text-success font-weight-bold"></span>
+                                        </div>
+                                        <div class="billing-address mt-3" th:if="${bill.billingAddress != null}">
+                                            <span>Địa chỉ giao hàng:</span>
+                                            <span class="ml-2" th:text="${bill.billingAddress}"></span>
+                                        </div>
                                     </div>
-                                    <hr>
                                 </div>
                                 <span class="close-modal-detail cursor-pointer p-2">&times</span>
                             </div>
                         </td>
+
+
                         <td>
                             <form method="POST" th:action="'/cancel-bill/' + ${bill.id}" class="form-cancel-order">
                                 <button type="submit" class="btn btn-danger" id="cancel-bill" th:if="${
