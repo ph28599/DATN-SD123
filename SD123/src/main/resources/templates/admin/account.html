@@ -78,7 +78,7 @@
                         <span th:text="${account.customer.phoneNumber}"></span>
                     </td>
                     <td>
-                        <span th:text="${account.role.name}"></span>
+                        <span th:text="#{account.role.__${account.role.name}__}"></span>
                     </td>
                     <td>
                         <span th:unless="${account.isNonLocked}" class="badge badge-danger">Đã khóa</span>

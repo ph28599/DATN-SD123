@@ -62,7 +62,6 @@ public class AuthController {
 
         Account accountByEmail= accountService.findByEmail(accountDto.getEmail());
 
-        //Kiểm tra xem số điện thoại đã có tài khoản chưa
         Account accountByPhone = accountRepository.findByCustomer_PhoneNumber(accountDto.getPhoneNumber());
 
         if(accountByEmail !=null ){
@@ -134,16 +133,13 @@ public class AuthController {
     public String resetPassword(@RequestParam String verificationCode,
                                 @RequestParam String newPassword,
                                 RedirectAttributes model) {
-        // Kiểm tra mã xác nhận và lấy người dùng liên kết
         Account account = verificationCodeService.verifyCode(verificationCode);
 
         if (account != null) {
-            // Đặt lại mật khẩu và xóa mã xác nhận
             accountService.resetPassword(account, newPassword);
             model.addFlashAttribute("success", "Đặt lại mật khẩu thành công");
             return "redirect:/user-login";
         } else {
-            // Mã xác nhận không hợp lệ
             model.addFlashAttribute("errorMessage", "Mã xác thực không hợp lệ");
             return "redirect:/reset-pass";
         }

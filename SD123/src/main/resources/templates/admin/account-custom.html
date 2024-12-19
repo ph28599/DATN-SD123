@@ -21,6 +21,17 @@
                     <span class="error"></span>
                 </div>
                 <div class="form-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu">
+                    <span class="error text-danger text-sm"></span>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu:</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                           placeholder="Xác nhận mật khẩu">
+                    <span class="error text-danger text-sm"></span>
+                </div>
+                <div class="form-group">
                     <label for="name">Họ tên: </label>
                     <span class="red_require"></span>
                     <input class="form-control" type="text" name="name" id="name" placeholder="Nhập họ tên">
@@ -80,7 +91,7 @@
                     <span th:text="${account.customer.phoneNumber}"></span>
                 </td>
                 <td>
-                    <span th:text="${account.birthDay}"></span>
+                    <span th:text="${#dates.format(account.birthDay, 'dd/MM/yyyy')}"></span>
                 </td>
 <!--                <td>-->
 <!--                    <span th:text="${account.role.name}"></span>-->
@@ -104,7 +115,8 @@
                         <span class="text-primary rounded cursor-pointer change-role-btn"
                               th:data-email="${account.email}"
                               th:data-name="${account.customer.name}"
-                              th:data-phone="${account.customer.phoneNumber}">
+                              th:data-phone="${account.customer.phoneNumber}"
+                              th:data-birthday="${account.birthDay}">
     <i class="fas fa-users-cog"></i>
 </span>
 
@@ -142,6 +154,12 @@
                     var email = $(this).attr('data-email');
                     var name = $(this).attr('data-name');
                     var phone = $(this).attr('data-phone');
+                    var birthDay = $(this).attr('data-birthday');
+                    if (birthDay) {
+                        var dateObj = new Date(birthDay);
+                        var formattedDate = dateObj.toISOString().split('T')[0];
+                        $('#birthDay').val(formattedDate);
+                    }
                     $('#email').val(email);
                     $('#name').val(name);
                     $('#phone').val(phone);
@@ -150,40 +168,7 @@
                 $('.close').on('click', function () {
                     $('.custom-modal').hide();
                 });
-
-                $('.block-account-btn').on('click', function () {
-                    Swal.fire({
-                        title: 'Khóa',
-                        text: 'Bạn chắc chắn muốn khóa?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        cancelButtonText: 'Hủy',
-                        confirmButtonText: 'Xác nhận',
-                        reverseButtons: true
-                    }).then(async (result) => {
-                        if (result.isConfirmed) {
-                            $(this).closest('form').submit();
-                        }
-                    });
-                });
-
-                $('.open-account-btn').on('click', function () {
-                    Swal.fire({
-                        title: 'Mở khóa',
-                        text: 'Bạn chắc chắn muốn mở khóa?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        cancelButtonText: 'Hủy',
-                        confirmButtonText: 'Xác nhận',
-                        reverseButtons: true
-                    }).then(async (result) => {
-                        if (result.isConfirmed) {
-                            $(this).closest('form').submit();
-                        }
-                    });
-                });
             }
-
         })
     </script>
 </div>

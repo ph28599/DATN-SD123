@@ -36,7 +36,7 @@ public class DiscountCodeImpl implements DiscountCodeService {
 
     @Override
     public DiscountCodeDto saveDiscountCode(DiscountCodeDto discountCodeDto) {
-       if (discountCodeRepository.existsByCode(discountCodeDto.getCode())) {
+        if (discountCodeRepository.existsByCode(discountCodeDto.getCode())) {
             throw new ShopApiException(HttpStatus.BAD_REQUEST, "Mã giảm giá "+discountCodeDto.getCode()+" đã tồn tại");
         }
         DiscountCode discountCode = convertToEntity(discountCodeDto);

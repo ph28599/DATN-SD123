@@ -262,72 +262,72 @@
                                     </div>
                                 </div>
                                 <div class="flex-w flex-t bor12 p-t-15 p-b-30">
-                        <div class="size-208 w-full-ssm">
-                            <span class="stext-110 cl2">Phí ship:</span>
-                        </div>
-                        <div class="size-209">
-                            <span id="fee" class="mtext-110 cl2"> 0 </span>
-                        </div>
-                    </div>
-                    <div class="flex-w flex-t bor12 p-t-15 p-b-30">
-                        <div class="size-208 w-full-ssm">
+                                    <div class="size-208 w-full-ssm">
+                                        <span class="stext-110 cl2">Phí ship:</span>
+                                    </div>
+                                    <div class="size-209">
+                                        <span id="fee" class="mtext-110 cl2"> 0 </span>
+                                    </div>
+                                </div>
+                                <div class="flex-w flex-t bor12 p-t-15 p-b-30">
+                                    <div class="size-208 w-full-ssm">
 									<span class="stext-110 cl2">
 										Voucher:
 									</span>
 
-                        </div>
-                        <div class="size-209">
+                                    </div>
+                                    <div class="size-209">
 									<span class="mtext-110 cl2" id="voucher-pic">
                                         0 VND
 									</span>
-                        </div>
-                    </div>
-                    <div class="flex-w flex-t p-t-27 p-b-33">
-                        <div class="size-208">
+                                    </div>
+                                </div>
+                                <div class="flex-w flex-t p-t-27 p-b-33">
+                                    <div class="size-208">
 									<span class="mtext-101 cl2">
 										Thành tiền:
 									</span>
-                        </div>
+                                    </div>
 
-                        <div class="size-209 p-t-1">
+                                    <div class="size-209 p-t-1">
 									<span class="mtext-110 cl2" id="all-total">
 
 									</span>
-                        </div>
-                    </div>
-                    <div class="flex-w flex-t p-t-27 p-b-33">
-                        <div class="size-208">
+                                    </div>
+                                </div>
+                                <div class="flex-w flex-t p-t-27 p-b-33">
+                                    <div class="size-208">
 									<span class="mtext-101 cl2">
 										Phương thức thanh toán:
 									</span>
-                        </div>
+                                    </div>
 
-                        <div class="size-209 p-t-1">
-                            <div class="form-group">
-                                <input type="radio" class="custom-radio" value="3" name="paymentMethod"
-                                       id="payment-online" checked>
-                                <label for="payment-online">Chuyển khoản</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="radio" class="custom-radio" value="1" name="paymentMethod"
-                                       id="payment-offline">
-                                <label for="payment-offline">Tiền mặt</label>
+                                    <div class="size-209 p-t-1">
+                                        <div class="form-group">
+                                            <input type="radio" class="custom-radio" value="3" name="paymentMethod"
+                                                   id="payment-online" checked>
+                                            <label for="payment-online">Thanh Toán VNPAY</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="radio" class="custom-radio" value="1" name="paymentMethod"
+                                                   id="payment-offline">
+                                            <label for="payment-offline">Thanh Toán Khi Nhận Hàng</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="checkbox d-flex">
+                                    <input type="checkbox" class="mr-2" id="term">
+                                    Tôi đồng ý với <a style="color: blue" data-toggle="modal" data-target="#exampleModalCenter2">&nbsp;
+                                    điều khoản &nbsp</a> của cửa hàng
+                                </label>
+                                <button type="button" id="submitBtn"
+                                        class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+                                        disabled>
+                                    Đặt hàng
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <label class="checkbox d-flex">
-                        <input type="checkbox" class="mr-2" id="term">
-                        Tôi đồng ý với <a style="color: blue" data-toggle="modal" data-target="#exampleModalCenter2">&nbsp;
-                        điều khoản &nbsp</a> của cửa hàng
-                    </label>
-                    <button type="button" id="submitBtn"
-                            class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
-                            disabled>
-                        Đặt hàng
-                    </button>
-                </div>
-            </div>
-        </div>
     </form>
     <div class="modal fade" style="z-index: 3000" id="exampleModalCenter2" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -342,15 +342,13 @@
                 <div class="modal-body">
                     <p>1. Người mua đã thanh toán bằng cách phương thức thanh toán hợp lệ nhưng không nhận được sản
                         phẩm, sản phẩm bị lỗi hoặc bị hư hại, sai sản phẩm, không ưng ý.</p>
-                    <p>2. Có thể gửi yêu cầu trả hàng/hoàn tiền trong vòng 7 ngày kể từ lúc đơn hàng được cập nhật giao
-                        hàng thành công.</p>
-                    <p>3. Tất cả các yêu cầu trả hànghoàn tiền phải được thực hiện trên web hoặc liên hệ trực tiếp tới
-                        cửa hàng</p>
-                    <p>4. Phí gửi hàng lại do người mua trả</p>
-                    <p>5. Mỗi hóa đơn chỉ được đổi trả 1 lần</p>
-                    <p>6. Chỉ hỗ trợ đổi size, đổi màu, đổi sản phẩm bằng hoặc hơn giá</p>
-                    <p>7. Người mua đóng gói và gửi trả sản phẩm bao gồm toàn bộ phụ kiện đi kèm, hóa đơn, tem phiếu bảo
-                        hành (nếu có) và sản phẩm phải trong tình trạng nguyên vẹn như khi nhận hàng.</p>
+                    <p>2. Khách hàng có thể hủy đơn trước khi sản phẩm đang được giao</p>
+                    <p>3. Đơn hàng đang giao đi sẽ không hỗ trợ hủy.</p>
+                    <p>4. Phí ship tùy thuộc vào khoảng cách địa lý và trọng lượng sản phẩm.</p>
+                    <p>5. Thông tin khách hàng được sử dụng để xử lý đơn hàng và không chia sẻ cho bên thứ ba nếu không có sự đồng ý.</p>
+                    <p>6. Khách hàng có thể lựa chọn thanh toán qua cổng thanh toán điện tử VNPay, hoặc thanh toán khi nhận hàng (COD).</p>
+                    <p>7. Khách hàng cần kiểm tra hàng ngay khi nhận. Nếu phát hiện hàng hóa bị hỏng hóc
+                        hoặc sai lệch, vui lòng liên hệ với chúng tôi trong vòng 24 giờ.</p>
                     <p>8. Người mua bắt buộc phải quay video hoặc chụp lại ảnh sản phẩm ngay khi nhận được và trong lúc
                         đóng gói hàng trả về để làm bằng chứng đối chiếu/khiếu nại về sau.</p>
 
@@ -475,8 +473,8 @@
                     swal("Lỗi", "Vui lòng nhập đầy đủ địa chỉ và số điện thoại", "error");
                     return;
                 }
-                if (!/^\d{10,12}$/.test(phone)) {
-                    swal("Lỗi", "Số điện thoại phải từ 10 đến 12 chữ số", "error");
+                if (!/^\d{10}$/.test(phone)) {
+                    swal("Lỗi", "Số điện thoại phải có 10 số", "error");
                     return;
                 }
                 const addressSelected = {
@@ -976,7 +974,7 @@
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
                             $('#loading-overlay').hide();
-                           Swal.fire({
+                            Swal.fire({
                                 title: 'Đặt hàng',
                                 text: 'Đặt hàng thành công',
                                 icon: 'success',
