@@ -413,17 +413,13 @@ public class BillServiceImpl implements BillService {
     @Override
     @Transactional
     public void addProductToBill(Long billId, Long productId, int quantity) {
-        // Step 1: Fetch the Bill entity
         Bill bill = billRepository.findById(billId).orElseThrow(() -> new NotFoundException("Không tìm thấy hóa đơn"));
 
-        // Ensure bill details are loaded
         Hibernate.initialize(bill.getBillDetail());
 
-        // Step 2: Fetch the ProductDetail entity
         ProductDetail productDetail = productDetailRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy sản phẩm"));
 
-        // Step 3: Check if the product already exists in the bill and update or create BillDetail
         Optional<BillDetail> existingBillDetailOpt = billDetailRepository.findByBillAndProductDetail(bill, productDetail);
         if (existingBillDetailOpt.isPresent()) {
             BillDetail existingBillDetail = existingBillDetailOpt.get();
@@ -438,7 +434,6 @@ public class BillServiceImpl implements BillService {
             billDetailRepository.save(newBillDetail);
         }
 
-        // Step 4: Reduce the product quantity in inventory
         int updatedQuantity = productDetail.getQuantity() - quantity;
         if (updatedQuantity < 0) {
             throw new IllegalArgumentException("Số lượng trong kho không đủ");
@@ -446,12 +441,10 @@ public class BillServiceImpl implements BillService {
         productDetail.setQuantity(updatedQuantity);
         productDetailRepository.save(productDetail);
 
-        // Step 5: Recalculate the total product amount in the Bill
         double totalProductAmount = bill.getBillDetail().stream()
                 .mapToDouble(detail -> detail.getMomentPrice() * detail.getQuantity())
                 .sum();
 
-        // Step 6: Apply the voucher discount if available
         double discountAmount = 0.0;
         if (bill.getDiscountCode() != null && bill.getDiscountCode().getDiscountAmount() != null) {
             discountAmount = bill.getDiscountCode().getDiscountAmount();

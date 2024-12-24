@@ -37,7 +37,7 @@
                         <option value="CHO_GIAO_HANG" th:selected="${trangThai == 'CHO_GIAO_HANG'}">Chờ giao hàng</option>
                         <option value="HOAN_THANH" th:selected="${trangThai == 'HOAN_THANH'}">Hoàn thành</option>
                         <option value="HUY" th:selected="${trangThai == 'HUY'}">Hủy</option>
-<!--                        <option value="TRA_HANG" th:selected="${trangThai == 'TRA_HANG'}">Trả hàng</option>-->
+                        <!--                        <option value="TRA_HANG" th:selected="${trangThai == 'TRA_HANG'}">Trả hàng</option>-->
                     </select>
                 </div>
                 <div class="form-group col-md-2">
@@ -96,7 +96,7 @@
                 <a th:href="@{/admin/bill-list(page=0, sort=${sortField == 'ngayTao' && sortDirection == 'desc' ? 'ngayTao,asc' : 'ngayTao,desc'}, maDinhDanh=${maDinhDanh}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, trangThai=${trangThai}, loaiDon=${loaiDon}, hoVaTen=${hoVaTen}, soDienThoai=${soDienThoai})}"
                    class="sort-link">↓</a>
             </th>
-            <th scope="col">Tổng tiền
+            <th scope="col">Tổng tiền hàng
                 <a th:href="@{/admin/bill-list(page=0, sort=${sortField == 'tongTien' && sortDirection == 'asc' ? 'tongTien,desc' : 'tongTien,asc'}, maDinhDanh=${maDinhDanh}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, trangThai=${trangThai}, loaiDon=${loaiDon}, hoVaTen=${hoVaTen}, soDienThoai=${soDienThoai})}"
                    class="sort-link">↑</a>
                 <a th:href="@{/admin/bill-list(page=0, sort=${sortField == 'tongTien' && sortDirection == 'desc' ? 'tongTien,asc' : 'tongTien,desc'}, maDinhDanh=${maDinhDanh}, ngayTaoStart=${ngayTaoStart}, ngayTaoEnd=${ngayTaoEnd}, trangThai=${trangThai}, loaiDon=${loaiDon}, hoVaTen=${hoVaTen}, soDienThoai=${soDienThoai})}"

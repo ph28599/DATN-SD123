@@ -145,6 +145,11 @@
                 }
             })
         })
+        if ($('.alert-success').length > 0) {
+            setTimeout(function () {
+                $('.alert-success').fadeOut();
+            }, 2000);
+        }
 
         var url = '/admin-only/discount-code?page=0';
         $('#search-btn').on('click', function () {
@@ -199,6 +204,7 @@
                 cleanedUrl += '&page=' + page
                 window.location.href = cleanedUrl
             }
+
         });
     </script>
 </div>
