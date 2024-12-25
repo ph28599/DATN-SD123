@@ -829,35 +829,37 @@
                         return 1;
                     }
 
+                    const maxQuan = parseInt(productDetailSe.quantity);
+                    let isExisted = false;
+
                     $(".product-select-body.active .product-select-item").each((index, element) => {
                         const item = $(element);
                         const itemProductDetailId = item.attr('data-product-detail-id');
                         if (itemProductDetailId == productDetailId) {
+                            isExisted = true;
                             const input = item.find('input');
                             var currentVal = input.val();
                             var nextVal = parseInt(currentVal) + 1;
-                            input.val(nextVal);
-                            const maxQuan = parseInt(item.attr('product-max-quan'));
+
                             if (nextVal > maxQuan) {
                                 Swal.fire({
                                     title: "Lỗi",
-                                    text: "Số lượng tối đa của sản phẩm này là " + maxQuan,
+                                    text: "Vượt quá số lượng tồn kho. Số lượng tồn kho: " + maxQuan,
                                     icon: "error"
                                 });
-                                input.val(maxQuan);
+                                return;
+                            } else {
+                                input.val(nextVal);
+                                const productPrice = removeAnyNonDigit(item.find('.product-select-price').text());
+                                const totalPrice = nextVal * parseFloat(productPrice);
+                                const totalPriceProductEl = item.find('.total-price-product');
+                                totalPriceProductEl.text(formatNumber(totalPrice));
+                                calculateAllPrice();
+                                calculateLastPrice();
                             }
-                            const productPrice = removeAnyNonDigit(item.find('.product-select-price').text());
-                            const totalPrice = nextVal * parseFloat(productPrice);
-                            const totalPriceProductEl = item.find('.total-price-product');
-                            totalPriceProductEl.text(formatNumber(totalPrice));
-
-                            calculateAllPrice();
-                            calculateLastPrice();
-
-                            canAdd = false;
                         }
-                    })
-                    if (!canAdd) {
+                    });
+                    if (isExisted) {
                         return;
                     }
                     const productPrice = formatNumber(productDetailSe.price)

@@ -617,7 +617,7 @@
                                             <span class="text-sm">&nbsp; Giá sau khi giảm &nbsp;</span>
                                             <input type="text" name="amount" placeholder=""
                                                    class="amount w-20 py-1 border-b-2 border-gray-400 outline-none text-sm  focus:border-gray-400 border-t-0 border-r-0 border-l-0"
-                                            >
+                                            readonly>
                                             <span class="text-sm">đ</span>
                                         </div>
                                     </div>
@@ -821,13 +821,32 @@
         //     ============================================ HANDLE SUBMIT ==========================
         function handleSubmit() {
             $('#save-discount-btn').on('click', async function () {
+                if(productSelectedListDetailId.length===0){
+                    swal.fire({
+                        title:"Lỗi",
+                        text:"Vui lòng chọn ít nhất một sản phẩm để áp dụng giảm giá",
+                        icon:"error"
+                    })
+                    return;
+                }
+
                 var productDiscounts = []
                 var canSubmit = true
                 await $('.product-select-item').each((index, item) => {
                     const productItem = $(item)
                     const amount = productItem.find('.amount').val()
+                    const percentage = productItem.find('.percentage').val()
                     const startDate = productItem.find('.startDate').val()
                     const endDate = productItem.find('.endDate').val()
+                    if (percentage.trim() == '' || percentage == null) {
+                        Swal.fire({
+                            title: 'Lỗi',
+                            text: 'Vui lòng điền đấy đủ phần trăm giảm',
+                            icon: 'error',
+                        })
+                        canSubmit = false
+                        return
+                    }
                     if (amount.trim() == '' || amount == null) {
                         Swal.fire({
                             title: 'Lỗi',
