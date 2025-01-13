@@ -48,7 +48,9 @@
                                 <!-- Add class 'active' to progress -->
                                 <div class="track"
                                      th:if="${billdetail.trangThaiDonHang != T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).TRA_HANG && billdetail.trangThaiDonHang != T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HUY}">
-                                    <div class="step" th:classappend="${
+
+                                    <th:block th:if="${billdetail.loaiHoaDon == T(com.project.DuAnTotNghiep.entity.enumClass.InvoiceType).ONLINE}">
+                                        <div class="step" th:classappend="${
                                     billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_XAC_NHAN ||
                                     billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_GIAO_HANG ||
                                     billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_LAY_HANG ||
@@ -61,9 +63,9 @@
                                                           fill="currentColor"/>
                                                 </svg>
                                             </span>
-                                        <span class="text">Chờ xác nhận</span>
-                                    </div>
-                                    <div class="step" th:classappend="${
+                                            <span class="text">Chờ xác nhận</span>
+                                        </div>
+                                        <div class="step" th:classappend="${
 
                                     billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_GIAO_HANG ||
                                     billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_LAY_HANG ||
@@ -86,15 +88,16 @@
                                                     </g>
                                                 </svg>
                                             </span>
-                                        <span class="text"> Chờ lấy hàng</span>
-                                    </div>
-                                    <div class="step" th:classappend="${
+                                            <span class="text"> Chờ lấy hàng</span>
+                                        </div>
+                                        <div class="step" th:classappend="${
                                     billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_GIAO_HANG ||
                                     billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HOAN_THANH  ? 'active' : ''}
                                     ">
-                                        <span class="icon"> <i class="fa fa-truck"></i> </span>
-                                        <span class="text"> Chờ giao hàng </span>
-                                    </div>
+                                            <span class="icon"> <i class="fa fa-truck"></i> </span>
+                                            <span class="text"> Chờ giao hàng </span>
+                                        </div>
+                                    </th:block>
                                     <div class="step" th:classappend="${
 
                                     billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HOAN_THANH  ? 'active' : ''}
@@ -221,10 +224,10 @@
                         <div class="py-2">
                             <div class="d-flex align-items-center justify-content-between pt-2 pb-2">
                                 <h5 class="font-size-15">Danh sách đơn hàng</h5>
-<!--                                <button class="add-product-btn btn btn-outline-dark rounded" data-bs-target="#exampleModal"-->
-<!--                                        data-bs-toggle="modal"-->
-<!--                                        th:if="${billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_XAC_NHAN}" type="button">Thêm sản phẩm-->
-<!--                                </button>-->
+                                <!--                                <button class="add-product-btn btn btn-outline-dark rounded" data-bs-target="#exampleModal"-->
+                                <!--                                        data-bs-toggle="modal"-->
+                                <!--                                        th:if="${billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_XAC_NHAN}" type="button">Thêm sản phẩm-->
+                                <!--                                </button>-->
                             </div>
 
                             <div class="table-responsive">
@@ -265,7 +268,7 @@
 
                                     <tr>
                                         <th class="text-end" colspan="5" scope="row">
-                                           Thành tiền
+                                            Tổng thanh toán sản phẩm
                                         </th>
                                         <td class="text-end"
                                             th:text="${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')}">
@@ -332,7 +335,7 @@
                             billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_XAC_NHAN
                             || billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_LAY_HANG}"
                                         type="button">
-                                    <i class="far fa-times-circle"></i>&nbsp;Hủy đơn này
+                                    <i class="far fa-times-circle"></i> Hủy đơn này
                                 </button>
                             </form>
 
@@ -345,13 +348,13 @@
                                 billdetail.trangThaiDonHang != T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).HOAN_THANH}">
                                         <span class="btn btn-secondary text-wrap rounded"
                                               th:if="${billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_XAC_NHAN}">
-                                            <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận, duyệt đơn này</span>
+                                            <i class="far fa-check-square text-wrap"></i>  Xác nhận, duyệt đơn này</span>
                                     <span class="btn btn-primary text-wrap rounded"
                                           th:if="${billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_LAY_HANG}">
-                                            <i class="far fa-check-square text-wrap"></i>&nbsp; Xác nhận chuyển cho shipper</span>
+                                            <i class="far fa-check-square text-wrap"></i>  Xác nhận chuyển cho shipper</span>
                                     <span class="btn btn-success  text-wrap rounded"
                                           th:if="${billdetail.trangThaiDonHang == T(com.project.DuAnTotNghiep.entity.enumClass.BillStatus).CHO_GIAO_HANG}">
-                                            <i class="far fa-check-square"></i>&nbsp; Xác nhận đã giao hàng</span>
+                                            <i class="far fa-check-square"></i>  Xác nhận đã giao hàng</span>
                                 </div>
                             </form>
                         </div>
@@ -364,7 +367,7 @@
 
             <!-- Modal content -->
             <div class="modal-content" style="min-width: 900px">
-                <span id="close-modal">&times;</span>
+                <span id="close-modal">×</span>
                 <div id="product-list">Loading products...</div>
             </div>
 

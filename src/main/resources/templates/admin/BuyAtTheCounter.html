@@ -425,7 +425,7 @@
                     </div>
                 </div>
                 <div class="selected-customer active mt-2 border border-blue-400 rounded-md">
-                    <span class="font-bold italic text-gray-500">--Khách lẻ--</span>
+                    <span class="font-bold italic text-gray-500">Khách lẻ</span>
                 </div>
             </div>
             <div class="flex items-center justify-between mb-3">
@@ -669,7 +669,7 @@
                     $('table').append(body)
 
                     var selectedCustomer = $(`<div class="selected-customer mt-2 border border-blue-400 rounded-md hidden">
-                    <span class="font-bold italic text-gray-500">--Khách lẻ--</span>
+                    <span class="font-bold italic text-gray-500">Khách lẻ</span>
                     </div>`)
                     $('.search-customer-container').append(selectedCustomer)
                     // Bắt sự kiện click trên tab mới
@@ -953,7 +953,6 @@
                 }
 
                 function handleChangeQuantity() {
-                    // HANDLE CHANGE QUANTITY
                     $('.product-select-quantity').on('keydown', function (e) {
                         onlyAllowNumberInput(e);
                     });
@@ -1180,7 +1179,6 @@
                     calculateLastPrice();
                 }
 
-
                 function calculateLastPrice() {
 
                     var lastPriceValue = parseFloat(allPrice.textContent.replace(/[^0-9]/g, '')) - parseFloat(productDiscount.textContent.replace(/[^0-9]/g, '')) - parseFloat(voucherDiscount.textContent.replace(/[^0-9]/g, ''))
@@ -1304,7 +1302,7 @@
                         `)
 
                     $('#delete-selected-customer-btn').click(() => {
-                        $('.selected-customer.active').html('<span class="font-bold italic text-gray-500">--Khách lẻ--</span>')
+                        $('.selected-customer.active').html('<span class="font-bold italic text-gray-500">Khách lẻ</span>')
                         $('.selected-customer.active').attr('selected-id', "")
                     })
                 }
@@ -1585,15 +1583,15 @@
                 var dataSendIfChuyenKhoan
 
                 async function handleSubmit() {
-                    const customerId = $(".selected-customer.active").attr("selected-id") || ""
-                    const voucherId = $(".selected-voucher.active").attr("selected-id") || ""
-                    var orderDetails = []
+                    const customerId = $(".selected-customer.active").attr("selected-id") || "";
+                    const voucherId = $(".selected-voucher.active").attr("selected-id") || "";
+                    var orderDetails = [];
                     $(".product-select-body.active .product-select-item").each(function () {
                         orderDetails.push({
                             productDetailId: $(this).attr("data-product-detail-id"),
                             quantity: $(this).find(".product-select-quantity").val()
-                        })
-                    })
+                        });
+                    });
 
                     if (orderDetails.length <= 0) {
                         Swal.fire({
@@ -1604,8 +1602,7 @@
                         return;
                     }
 
-                    // Lấy giá trị từ ô nhập tiền khách đưa và định dạng lại
-                    const customerPay = parseInt(removeAnyNonDigit($("#customerPayInput").val())) || 0; // Nếu không có giá trị, gán bằng 0
+                    const customerPay = parseInt(removeAnyNonDigit($("#customerPayInput").val())) || 0;
 
                     if (customerPay === 0) {
                         Swal.fire({
@@ -1627,9 +1624,9 @@
                         return;
                     }
 
-                    const promotionPrice = parseInt(removeAnyNonDigit($("#voucher-discount").text())) + parseInt(removeAnyNonDigit($("#product-discount").text()))
+                    const promotionPrice = parseInt(removeAnyNonDigit($("#voucher-discount").text())) + parseInt(removeAnyNonDigit($("#product-discount").text()));
 
-                    var paymentMethodId = $('input[name="paymentMethod"]:checked').val()
+                    var paymentMethodId = $('input[name="paymentMethod"]:checked').val();
 
                     var dataSend = {
                         customer: {
@@ -1642,17 +1639,31 @@
                         orderDetailDtos: orderDetails
                     };
 
-                    if (paymentMethodId == 3) {
-                        $(".qr-payment-container").removeClass('hidden');
-                        $(".qr-payment-container").find('img').attr("src", `https://img.vietqr.io/image/MB-1561619102003-compact2.png?amount=${requireMoney}&addInfo=Thanh%20toan%20don%20hang&accountName=DO%20HOANH%20SANG`);
-                        dataSendIfChuyenKhoan = {
-                            ...dataSend,
-                            requireMoney: requireMoney // Cập nhật giá trị requireMoney vào dataSendIfChuyenKhoan
-                        };
-                    } else {
-                        // Execute the AJAX request directly for other payment methods
-                        await handleAjaxRequest(dataSend);
-                    }
+                    Swal.fire({
+                        title: "Xác nhận",
+                        text: "Bạn chắc chắn muốn xác nhận đơn hàng này?",
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonText: "Xác nhận",
+                        cancelButtonText: "Hủy"
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            if (paymentMethodId == 3) {
+                                $(".qr-payment-container").removeClass('hidden');
+                                $(".qr-payment-container").find('img').attr(
+                                    "src",
+                                    `https://img.vietqr.io/image/MB-1561619102003-compact2.png?amount=${requireMoney}&addInfo=Thanh%20toan%20don%20hang&accountName=DO%20HOANH%20SANG`
+                                );
+                                dataSendIfChuyenKhoan = {
+                                    ...dataSend,
+                                    requireMoney: requireMoney
+                                };
+                            } else {
+                                // Thực hiện yêu cầu AJAX trực tiếp với các phương thức thanh toán khác
+                                await handleAjaxRequest(dataSend);
+                            }
+                        }
+                    });
                 }
 
                 async function handleAjaxRequest(dataSend) {

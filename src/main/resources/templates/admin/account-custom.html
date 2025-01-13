@@ -157,7 +157,10 @@
                     var birthDay = $(this).attr('data-birthday');
                     if (birthDay) {
                         var dateObj = new Date(birthDay);
-                        var formattedDate = dateObj.toISOString().split('T')[0];
+                        var year = dateObj.getFullYear();
+                        var month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                        var day = String(dateObj.getDate()).padStart(2, '0');
+                        var formattedDate = `${year}-${month}-${day}`;
                         $('#birthDay').val(formattedDate);
                     }
                     $('#email').val(email);
